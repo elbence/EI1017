@@ -25,5 +25,6 @@ public class Row {
     // recommended remove
     // recommended toString
     // recommended equals
+    // more methods...
 
 }
