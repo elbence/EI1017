@@ -9,6 +9,10 @@ public class Row {
         data = new LinkedList<>();
     }
 
+    public List<Double> getData () {
+        return data;
+    }
+
     // ret 0 if succes; -1 if fail
     public int addItem (Double item) {
         if (item != null) {
