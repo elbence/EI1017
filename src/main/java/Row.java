@@ -22,4 +22,8 @@ public class Row {
         return -1;
     }
 
+    // recommended remove
+    // recommended toString
+    // recommended equals
+
 }
