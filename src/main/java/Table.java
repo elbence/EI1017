@@ -1,11 +1,12 @@
+import java.util.LinkedList;
 import java.util.List;
 
 public class Table {
     private List<String> headers;
     private List<Row> rows;
     public Table(){
-        rows = null;
-        headers = null;
+        rows = new LinkedList<>();
+        headers = new LinkedList<>();
     }
 
     public List<Double> getClumAt(int columNumber){
