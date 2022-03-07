@@ -9,6 +9,8 @@ public class Table {
         headers = new LinkedList<>();
     }
 
+    public List<String> getHeaders() {return headers;}
+
     public List<Double> getClumAt(int columNumber){
         List<Double> columnas = new LinkedList<>();
         for (Row row : rows) {

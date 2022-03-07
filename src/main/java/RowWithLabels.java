@@ -13,6 +13,8 @@ public class RowWithLabels extends Row{
         return label;
     }
 
+    public void addLabel (String label) {this.label = label;}
+
     @Override
     public String toString() {
         return "RowWithLabels{" +
