@@ -11,8 +11,8 @@ public class Table {
 
     public List<Double> getClumAt(int columNumber){
         List<Double> columnas = new LinkedList<>();
-        for (int i = 0; i<rows.size(); i++){
-            columnas.add(rows.get(i).getData().get(columNumber));
+        for (Row row : rows) {
+            columnas.add(row.getData().get(columNumber));
         }
         return columnas;
     }
