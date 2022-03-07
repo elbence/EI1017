@@ -30,4 +30,11 @@ public class Table {
         return headers.add(header);
     }
 
+    @Override
+    public String toString() {
+        return "Table{" +
+                "headers=" + headers +
+                ", rows=" + rows +
+                '}';
+    }
 }

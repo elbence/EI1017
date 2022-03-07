@@ -13,4 +13,11 @@ public class TableWithLabels extends Table{
     public RowWithLabels getRowAt(int rowNumber) {
         return rows.get(rowNumber);
     }
+
+    @Override
+    public String toString() {
+        return "TableWithLabels{" +
+                "rows=" + rows +
+                "} " + super.toString();
+    }
 }

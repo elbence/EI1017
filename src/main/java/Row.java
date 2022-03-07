@@ -25,6 +25,13 @@ public class Row {
         return -1;
     }
 
+    @Override
+    public String toString() {
+        return "Row{" +
+                "data=" + data +
+                '}';
+    }
+
     // recommended remove
     // recommended toString
     // recommended equals

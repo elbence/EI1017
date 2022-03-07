@@ -12,4 +12,11 @@ public class RowWithLabels extends Row{
     public String getLabel() {
         return label;
     }
+
+    @Override
+    public String toString() {
+        return "RowWithLabels{" +
+                "label='" + label + '\'' +
+                "} " + super.toString();
+    }
 }

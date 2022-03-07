@@ -36,6 +36,7 @@ class TableTest {
             }
             tabla.addRow(row);
             assertEquals(row, tabla.getRowAt(i));
+            System.out.println(tabla);
         }
 
     }
