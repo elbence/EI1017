@@ -23,9 +23,6 @@ public class Table {
         return headers.get(index);
     }
     //opcional
-    public List<String> getHeaders(){
-        return headers;
-    }
     public boolean addRow(Row row){
        return rows.add(row);
     }

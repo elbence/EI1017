@@ -25,7 +25,6 @@ class TableTest {
             assertEquals(etiqueta, tabla.getHeader(i));
             i++;
         }
-        System.out.println(tabla.getHeaders());
     }
 
     @org.junit.jupiter.api.Test
@@ -71,11 +70,5 @@ class TableTest {
             tabla.addRow(row);
             assertEquals(row, tabla.getRowAt(i));
         }
-    }
-    @org.junit.jupiter.api.Test
-    void getHeader() {
-    }
-    @org.junit.jupiter.api.Test
-    void getHeaders() {
     }
 }
