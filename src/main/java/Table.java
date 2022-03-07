@@ -9,6 +9,8 @@ public class Table {
         headers = new LinkedList<>();
     }
 
+    public List<String> getHeaders() {return headers;}
+
     public List<Double> getClumAt(int columNumber){
         return rows.get(columNumber).getData();
     }
@@ -21,5 +23,12 @@ public class Table {
     public boolean addHeader(String header){
         return headers.add(header);
     }
+
+//    @Override
+//    public String toString() {
+//        System.out.println(headers);
+//        for (Row row : rows) System.out.println(row);
+//        return "On developement";
+//    }
 
 }

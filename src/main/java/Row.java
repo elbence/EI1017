@@ -27,4 +27,9 @@ public class Row {
     // recommended equals
     // more methods...
 
+    @Override
+    public String toString() {
+        return data.toString();
+    }
+
 }
