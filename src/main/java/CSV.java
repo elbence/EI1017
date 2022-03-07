@@ -26,7 +26,9 @@ public class CSV {
         }
         return null;
     }
-
+    // Defined Structure to read:
+    // First line should contain all headers
+    // Remaining rows should contain key at end of line (recommended)
     public TableWithLabels readTableWithLabels (String route) {
         try {
             File myFile = new File(route);
@@ -65,21 +67,28 @@ public class CSV {
         return newRow;
     }
     // Converts a String into a ROW and checks for a label to add
-    private Row stringToRowWithLabels (String linea) {
+    private RowWithLabels stringToRowWithLabels (String linea) {
         RowWithLabels newRow = new RowWithLabels();
         Scanner lineScanner = new Scanner(linea);
         lineScanner.useDelimiter(",");
         while (lineScanner.hasNext()) {
             String data = lineScanner.next();
-            // Este lector no funciona correctamente, usar otro metodo para leer las lineas
-            if (lineScanner.hasNextDouble()) {
-                Double tmp = lineScanner.nextDouble();
-                newRow.addItem(tmp);
-                System.out.println(tmp);
-            } else newRow.addLabel(lineScanner.next());
+            if (isDouble(data)) {
+                newRow.addItem(Double.parseDouble(data));
+            } else {
+                newRow.addLabel(data);
+            }
         }
-        System.out.println(newRow);
         return newRow;
+    }
+
+    private boolean isDouble(String value) {
+        try {
+            Double tmp = Double.parseDouble(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
 }

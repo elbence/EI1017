@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Table {
-    private List<String> headers;
+    protected List<String> headers;
     private List<Row> rows;
     public Table(){
         rows = new LinkedList<>();
@@ -34,9 +34,9 @@ public class Table {
 
     @Override
     public String toString() {
-        return "Table{" +
-                "headers=" + headers +
-                ", rows=" + rows +
-                '}';
+        String tmp = "";
+        tmp += headers;
+        for (Row row : rows) tmp += ( "\n" + row);
+        return tmp;
     }
 }

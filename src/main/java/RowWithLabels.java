@@ -17,8 +17,6 @@ public class RowWithLabels extends Row{
 
     @Override
     public String toString() {
-        return "RowWithLabels{" +
-                "label='" + label + '\'' +
-                "} " + super.toString();
+        return super.toString() +" "+ label;
     }
 }

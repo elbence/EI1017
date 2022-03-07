@@ -5,6 +5,6 @@ public class pruebaCSV {
         System.out.println(tmp);
         for (int i = 0; i < 20; i++) System.out.println();
         Table tmpWL = gestorCSV.readTableWithLabels("src/main/resources/iris.csv");
-        //System.out.println(tmpWL);
+        System.out.println(tmpWL);
     }
 }

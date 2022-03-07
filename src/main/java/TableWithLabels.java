@@ -14,10 +14,17 @@ public class TableWithLabels extends Table{
         return rows.get(rowNumber);
     }
 
+    public boolean addRow(RowWithLabels row){
+        return rows.add(row);
+    }
+
     @Override
     public String toString() {
-        return "TableWithLabels{" +
-                "rows=" + rows +
-                "} " + super.toString();
+        String tmp = "";
+        tmp += headers;
+        for (RowWithLabels row : rows) {
+            tmp += ("\n" + row);
+        }
+        return tmp;
     }
 }
