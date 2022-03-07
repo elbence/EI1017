@@ -21,10 +21,4 @@ class LinealRegressionTest {
         assertEquals(alpha, String.format("%.3f", testAlpha));
         assertEquals(beta, String.format("%.2f", testBeta));
     }
-
-    @Test
-    void estimate() {
-        Double y = gestorRL.estimate(1211.0);
-        assertEquals(1802.0, y);
-    }
 }
