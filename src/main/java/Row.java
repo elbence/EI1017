@@ -5,6 +5,9 @@ public class Row {
 
     private List<Double> data;
 
+    public Row(List<Double> datos){
+        data = datos;
+    }
     public Row() {
         data = new LinkedList<>();
     }

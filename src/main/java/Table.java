@@ -10,10 +10,20 @@ public class Table {
     }
 
     public List<Double> getClumAt(int columNumber){
-        return rows.get(columNumber).getData();
+        List<Double> columnas = new LinkedList<>();
+        for (int i = 0; i<rows.size(); i++){
+            columnas.add(rows.get(i).getData().get(columNumber));
+        }
+        return columnas;
     }
     public Row getRowAt(int rowNumber){
         return rows.get(rowNumber);
+    }
+    public String getHeader(int index){
+        return headers.get(index);
+    }
+    public List<String> getHeaders(){
+        return headers;
     }
     public boolean addRow(Row row){
        return rows.add(row);
