@@ -3,7 +3,7 @@ import java.util.List;
 
 public class Row {
 
-    private List<Double> data;
+    protected List<Double> data;
 
     public Row(List<Double> datos){
         data = datos;
