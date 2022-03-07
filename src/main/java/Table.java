@@ -22,6 +22,7 @@ public class Table {
     public String getHeader(int index){
         return headers.get(index);
     }
+    //opcional
     public List<String> getHeaders(){
         return headers;
     }
