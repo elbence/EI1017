@@ -26,9 +26,10 @@ public class Table {
 
     @Override
     public String toString() {
-        System.out.println(headers);
-        for (Row row : rows) System.out.println(row);
-        return "On developement";
+        String tmp = "";
+        tmp += headers;
+        for (Row row : rows) tmp += ( "\n" + row);
+        return tmp;
     }
 
 }
