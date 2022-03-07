@@ -22,6 +22,7 @@ class TableTest {
         int i = 0;
         for (String etiqueta : etiquetas){
             tabla.addHeader(etiqueta);
+            System.out.println(tabla.getHeader(i));
             assertEquals(etiqueta, tabla.getHeader(i));
             i++;
         }
@@ -35,8 +36,8 @@ class TableTest {
                 row.addItem(array[i][j]);
             }
             tabla.addRow(row);
+            System.out.println(tabla.getRowAt(i));
             assertEquals(row, tabla.getRowAt(i));
-            System.out.println(tabla);
         }
 
     }
@@ -57,7 +58,9 @@ class TableTest {
             for (Double[] doubles : array) {
                 columna.add(doubles[i]);
             }
+            System.out.println(tabla.getClumAt(i));
             assertEquals(columna, tabla.getClumAt(i));
+
         }
     }
 
@@ -69,6 +72,7 @@ class TableTest {
                 row.addItem(array[i][j]);
             }
             tabla.addRow(row);
+            System.out.println(tabla.getRowAt(i));
             assertEquals(row, tabla.getRowAt(i));
         }
     }
