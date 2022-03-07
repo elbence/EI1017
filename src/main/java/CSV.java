@@ -19,9 +19,27 @@ public class CSV {
                 String line = myIter.nextLine();
                 table.addRow(stringToRow(line));
             }
-
             return table;
+        } catch (FileNotFoundException e) {
+            System.out.println("ERROR: File does not exist.");
+            e.printStackTrace();
+        }
+        return null;
+    }
 
+    public TableWithLabels readTableWithLabels (String route) {
+        try {
+            File myFile = new File(route);
+            Scanner myIter = new Scanner(myFile);
+            myIter.useDelimiter(",");
+
+            TableWithLabels table = new TableWithLabels();
+            if (myIter.hasNextLine()) addHeadersToTable(myIter.nextLine(), table);
+            while (myIter.hasNextLine()) {
+                String line = myIter.nextLine();
+                table.addRow(stringToRowWithLabels(line));
+            }
+            return table;
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: File does not exist.");
             e.printStackTrace();
@@ -44,6 +62,23 @@ public class CSV {
         Scanner lineScanner = new Scanner(linea);
         lineScanner.useDelimiter(",");
         while (lineScanner.hasNext()) newRow.addItem(lineScanner.nextDouble());
+        return newRow;
+    }
+    // Converts a String into a ROW and checks for a label to add
+    private Row stringToRowWithLabels (String linea) {
+        RowWithLabels newRow = new RowWithLabels();
+        Scanner lineScanner = new Scanner(linea);
+        lineScanner.useDelimiter(",");
+        while (lineScanner.hasNext()) {
+            String data = lineScanner.next();
+            // Este lector no funciona correctamente, usar otro metodo para leer las lineas
+            if (lineScanner.hasNextDouble()) {
+                Double tmp = lineScanner.nextDouble();
+                newRow.addItem(tmp);
+                System.out.println(tmp);
+            } else newRow.addLabel(lineScanner.next());
+        }
+        System.out.println(newRow);
         return newRow;
     }
 

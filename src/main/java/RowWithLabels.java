@@ -8,4 +8,12 @@ public class RowWithLabels extends Row{
     public String getLabel() {
         return label;
     }
+
+    public void addLabel (String label) {this.label = label;}
+    public int addItem (Double item) { return super.addItem(item);}
+
+    @Override
+    public String toString() {
+        return super.toString() +" "+ label;
+    }
 }
