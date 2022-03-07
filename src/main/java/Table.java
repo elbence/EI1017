@@ -24,11 +24,11 @@ public class Table {
         return headers.add(header);
     }
 
-//    @Override
-//    public String toString() {
-//        System.out.println(headers);
-//        for (Row row : rows) System.out.println(row);
-//        return "On developement";
-//    }
+    @Override
+    public String toString() {
+        System.out.println(headers);
+        for (Row row : rows) System.out.println(row);
+        return "On developement";
+    }
 
 }
