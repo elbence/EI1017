@@ -63,7 +63,7 @@ public class CSV {
         Row newRow = new Row();
         Scanner lineScanner = new Scanner(linea);
         lineScanner.useDelimiter(",");
-        while (lineScanner.hasNext()) newRow.addItem(lineScanner.nextDouble());
+        while (lineScanner.hasNext()) newRow.addItem(Double.parseDouble(lineScanner.next()));
         return newRow;
     }
     // Converts a String into a ROW and checks for a label to add
