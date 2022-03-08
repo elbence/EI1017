@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class LinealRegression {
+public class LinealRegression implements Algorithm<Table, Double, Double>{
     private Double alpha;
     private Double beta;
 

@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class KNearestNeighbours {
+public class KNearestNeighbours implements Algorithm<TableWithLabels, String, List<Double>>{
 
     private TableWithLabels data;
 
