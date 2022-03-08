@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Row {
 
-    protected List<Double> data;
+    private List<Double> data;
 
     public Row(List<Double> datos){
         data = datos;

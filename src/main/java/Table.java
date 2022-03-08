@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Table {
-    protected List<String> headers;
+    private List<String> headers;
     private List<Row> rows;
     public Table(){
         rows = new LinkedList<>();
@@ -24,6 +24,8 @@ public class Table {
     public String getHeader(int index){
         return headers.get(index);
     }
+    public List<String> getAllHeaders() {return headers;}
+
     //opcional
     public boolean addRow(Row row){
        return rows.add(row);

@@ -23,7 +23,7 @@ public class TableWithLabels extends Table{
     @Override
     public String toString() {
         String tmp = "";
-        tmp += headers;
+        tmp += super.getAllHeaders();
         for (RowWithLabels row : rows) {
             tmp += ("\n" + row);
         }

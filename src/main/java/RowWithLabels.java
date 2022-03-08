@@ -1,5 +1,3 @@
-import java.util.Iterator;
-
 public class RowWithLabels extends Row{
     private String label;
     public RowWithLabels(String label){
