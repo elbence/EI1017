@@ -18,7 +18,7 @@ public class TableWithLabels extends Table{
         return rows.add(row);
     }
 
-    public List<RowWithLabels> getAllData() {return rows;}
+    public List<RowWithLabels> getAllData() { return rows; }
 
     @Override
     public String toString() {
