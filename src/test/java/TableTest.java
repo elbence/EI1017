@@ -1,7 +1,7 @@
 import Estructura.Row;
 import Estructura.Table;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,7 +54,7 @@ class TableTest {
     void getClumAt() {
         rellenar();
         for (int i = 0; i<array.length; i++){
-           List<Double> columna= new LinkedList<>();
+           List<Double> columna= new ArrayList<>();
             for (Double[] doubles : array) {
                 columna.add(doubles[i]);
             }

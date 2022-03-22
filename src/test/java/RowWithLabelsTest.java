@@ -1,7 +1,7 @@
 import Estructura.RowWithLabels;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,7 +10,7 @@ class RowWithLabelsTest {
 
     @Test
     void getData() {
-        List<Double> expectedValue = new LinkedList<>();
+        List<Double> expectedValue = new ArrayList<>();
         RowWithLabels newRow = new RowWithLabels();
         for (int i = 0; i < Math.round(Math.random()*10); i++) {
             Double aux = Math.random();

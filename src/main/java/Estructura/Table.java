@@ -1,5 +1,6 @@
 package Estructura;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,14 +8,14 @@ public class Table {
     private List<String> headers;
     private List<Row> rows;
     public Table(){
-        rows = new LinkedList<>();
-        headers = new LinkedList<>();
+        rows = new ArrayList<>();
+        headers = new ArrayList<>();
     }
 
     public List<String> getHeaders() {return headers;}
 
     public List<Double> getClumAt(int columNumber){
-        List<Double> columnas = new LinkedList<>();
+        List<Double> columnas = new ArrayList<>();
         for (Row row : rows) {
             columnas.add(row.getData().get(columNumber));
         }

@@ -1,6 +1,6 @@
 package Estructura;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TableWithLabels extends Table{
@@ -8,7 +8,7 @@ public class TableWithLabels extends Table{
 
     public TableWithLabels(){
         super();
-        rows = new LinkedList<>();
+        rows = new ArrayList<>();
     }
 
     @Override

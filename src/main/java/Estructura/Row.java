@@ -1,7 +1,7 @@
 package Estructura;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Row {
@@ -12,7 +12,7 @@ public class Row {
         data = datos;
     }
     public Row() {
-        data = new LinkedList<>();
+        data = new ArrayList<>();
     }
 
     public List<Double> getData () {
