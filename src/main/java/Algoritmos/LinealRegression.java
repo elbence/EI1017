@@ -1,3 +1,7 @@
+package Algoritmos;
+
+import Estructura.Table;
+
 import java.util.List;
 
 public class LinealRegression implements Algorithm<Table, Double, Double>{

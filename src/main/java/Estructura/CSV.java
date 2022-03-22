@@ -1,3 +1,5 @@
+package Estructura;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -5,7 +7,7 @@ import java.util.Scanner;
 public class CSV {
 
     // Se tomará constructor por defecto
-    // Se trata de una clase para gestionar ficheros del tipo CSV
+    // Se trata de una clase para gestionar ficheros del tipo Estructura.CSV
 
     public Table readTable (String route) {
         try {
@@ -49,7 +51,7 @@ public class CSV {
         return null;
     }
 
-    // Adds the strings in headerList as headers of the Table table
+    // Adds the strings in headerList as headers of the Estructura.Table table
     private void addHeadersToTable (String headersList, Table table) {
         Scanner headerScanner = new Scanner(headersList);
         headerScanner.useDelimiter(",");
@@ -58,7 +60,7 @@ public class CSV {
         }
     }
 
-    // Converts a String into a Row and returns it (NO SAFETY, should be checked first!)
+    // Converts a String into a Estructura.Row and returns it (NO SAFETY, should be checked first!)
     private Row stringToRow (String linea) {
         Row newRow = new Row();
         Scanner lineScanner = new Scanner(linea);

@@ -1,3 +1,6 @@
+import Estructura.CSV;
+import Estructura.Table;
+import Estructura.TableWithLabels;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,6 +1,6 @@
-import org.junit.jupiter.api.BeforeAll;
+import Estructura.Row;
+import Estructura.Table;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

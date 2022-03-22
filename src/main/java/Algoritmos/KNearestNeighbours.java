@@ -1,3 +1,8 @@
+package Algoritmos;
+
+import Estructura.RowWithLabels;
+import Estructura.TableWithLabels;
+
 import java.util.List;
 
 public class KNearestNeighbours implements Algorithm<TableWithLabels, String, List<Double>>{

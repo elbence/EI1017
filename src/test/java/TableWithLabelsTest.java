@@ -1,3 +1,5 @@
+import Estructura.RowWithLabels;
+import Estructura.Table;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
