@@ -12,6 +12,8 @@ public class Table {
         headers = new ArrayList<>();
     }
 
+    public int size() {return rows.size();}
+
     public List<String> getHeaders() {return headers;}
 
     public List<Double> getClumAt(int columNumber){

@@ -12,6 +12,8 @@ public class TableWithLabels extends Table{
         rows = new ArrayList<>();
     }
 
+    public int size() {return rows.size();}
+
     @Override
     public RowWithLabels getRowAt(int rowNumber) {
         return (RowWithLabels) rows.get(rowNumber);
