@@ -15,6 +15,7 @@ public class Row {
         data = new ArrayList<>();
     }
 
+    public int size() {return data.size();}
     public List<Double> getData () {
         return data;
     }
@@ -27,6 +28,16 @@ public class Row {
         }
         return -1;
     }
+
+    public int set (Double value, int index) {
+        if (value != null && index < data.size() && index >= 0) {
+            data.set(index, value);
+            return 0;
+        }
+        return -1;
+    }
+
+    public Double get(int index) {return data.get(index);}
 
     // compares parsed ROW to the row from which is called
     // returns an abs value for expresing distance or -1 if rows are not comparable

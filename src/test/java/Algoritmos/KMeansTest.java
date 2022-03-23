@@ -32,5 +32,10 @@ class KMeansTest {
 
     @Test
     void estimate() {
+
+        KMeans kmeans = new KMeans(3,5, 234521);
+        kmeans.train(table);
+        System.out.println();
+
     }
 }
