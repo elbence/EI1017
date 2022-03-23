@@ -1,6 +1,7 @@
 package Algoritmos;
 
 import Estructura.*;
+import Exepciones.NoDataException;
 
 public class KMeans implements  Algorithm<Table, String, Row>{
 
@@ -27,29 +28,33 @@ public class KMeans implements  Algorithm<Table, String, Row>{
             int act = (int) (seed + i * seed % 1000) % table.size();
             System.out.println(act);
             Representatives[i] = table.getRowAt(act);
-            Representatives[i].addLabel("cluster-"+(i+1));
+            Representatives[i].addLabel("cluster-" + (i + 1));
             System.out.println(Representatives[i]);
         }
 
         // calculate distance of each element to every centroid
         // and assign proper cluster tag
-        for (RowWithLabels element : table.getAllData()) {
-            int elementCluster = 0;
-            Double minDist = -1.0;
-            Double distAct;
-            int i = 0;
-            for (RowWithLabels representative : Representatives) {
-                i++;
-                distAct = element.distanceTo(representative);
-                //System.out.println(distAct);
-                if (distAct < minDist || minDist < 0) {
-                    minDist = distAct;
-                    elementCluster = i;
-                    //System.out.println("new min ^^^");
+        try {
+            for (RowWithLabels element : table.getAllData()) {
+                int elementCluster = 0;
+                Double minDist = -1.0;
+                Double distAct;
+                int i = 0;
+                for (RowWithLabels representative : Representatives) {
+                    i++;
+                    distAct = element.distanceTo(representative);
+                    //System.out.println(distAct);
+                    if (distAct < minDist || minDist < 0) {
+                        minDist = distAct;
+                        elementCluster = i;
+                        //System.out.println("new min ^^^");
+                    }
                 }
+                element.addLabel("cluster-" + elementCluster);
+                //System.out.println(element);System.out.println();
             }
-            element.addLabel("cluster-"+elementCluster);
-            //System.out.println(element);System.out.println();
+        } catch (NoDataException e) {
+            System.out.println("Missing data");
         }
 
         // recalculate centroids
