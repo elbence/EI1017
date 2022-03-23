@@ -3,6 +3,7 @@ package Algoritmos;
 import Estructura.RowWithLabels;
 import Estructura.TableWithLabels;
 import Exepciones.NoDataException;
+import Exepciones.NotTrainedException;
 
 import java.util.List;
 
@@ -15,7 +16,8 @@ public class KNearestNeighbours implements Algorithm<TableWithLabels, String, Li
     }
 
     // Euclidean ecuation implemented in distanceBetweenRows (should be accessible)
-    public String estimate (List<Double> sample) {
+    public String estimate (List<Double> sample) throws NotTrainedException {
+        if (data == null) throw new NotTrainedException();
         RowWithLabels sampleRow = new RowWithLabels();
         for (Double value : sample) sampleRow.addItem(value);
         // Compare with every row

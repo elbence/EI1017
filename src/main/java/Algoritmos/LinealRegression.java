@@ -1,6 +1,7 @@
 package Algoritmos;
 
 import Estructura.Table;
+import Exepciones.NotTrainedException;
 
 import java.util.List;
 
@@ -34,7 +35,8 @@ public class LinealRegression implements Algorithm<Table, Double, Double>{
         alpha = numerador/denominador;
         beta = mediay-(alpha*mediax);
     }
-    public Double estimate(Double sample){
+    public Double estimate(Double sample) throws NotTrainedException{
+        if (alpha == 0 && beta == 0) throw new NotTrainedException();
         return (alpha * sample)+beta;
     }
 
