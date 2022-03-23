@@ -28,7 +28,9 @@ public class Row {
         return -1;
     }
 
-    public Double distanceBetweenRows(Row row) {
+    // compares parsed ROW to the row from which is called
+    // returns an abs value for expresing distance or -1 if rows are not comparable
+    public Double distanceTo(Row row) {
         if (row.getData().size() == data.size()) {
             Iterator<Double> iter1 = row.getData().iterator();
             Iterator<Double> iter2 = data.iterator();
