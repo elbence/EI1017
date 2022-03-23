@@ -1,6 +1,10 @@
 import Estructura.RowWithLabels;
 import Estructura.Table;
+import Estructura.TableWithLabels;
+import Exepciones.NoDataException;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,5 +28,14 @@ class TableWithLabelsTest {
             tabla.addRow(row);
             assertEquals(row, tabla.getRowAt(i));
         }
+    }
+
+    @Test
+    void getAllData(){
+        TableWithLabels tabla= new TableWithLabels();
+        assertThrows(NoDataException.class, () -> tabla.getAllData());
+        RowWithLabels row = new RowWithLabels(etiquetas[0]);
+        tabla.addRow(row);
+        assertDoesNotThrow(() -> tabla.getAllData());
     }
 }
