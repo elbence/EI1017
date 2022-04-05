@@ -24,7 +24,7 @@ public class KNearestNeighbours implements Algorithm<TableWithLabels, String, Li
         Double minDist = -1.0;
         RowWithLabels minDistRow = sampleRow; // placeholder, and helps to find out if has been changed
         try {
-            for (RowWithLabels row : data.getAllData()) {
+            for (RowWithLabels row :) {
                 Double distAct = row.distanceTo(sampleRow);
                 //System.out.println(distAct);
                 if (minDist < 0 || (distAct < minDist && distAct >= 0)) {
