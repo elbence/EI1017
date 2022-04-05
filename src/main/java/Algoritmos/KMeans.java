@@ -24,17 +24,13 @@ public class KMeans implements  Algorithm<Table, String, Row>{
 
     @Override
     public void train(Table data) {
+
         table = (TableWithLabels) data;
 
         // choose representatives
-        for (int i = 0; i < numberClusters; i++) {
-            int act = (int) (seed + i * seed % 1000) % table.size();
-            //System.out.println(act);
-            representatives[i] = table.getRowAt(act);
-            representatives[i].addLabel("cluster-" + (i + 1));
-            //System.out.println(Representatives[i]);
-        }
+        chooseRepresentatives();
 
+        // repeat rest of steps
         for (int iters = 0; iters < iterations; iters++) {
 
             // calculate distance of each element to every centroid
@@ -45,20 +41,7 @@ public class KMeans implements  Algorithm<Table, String, Row>{
 
             try {
                 for (RowWithLabels element : table.getAllData()) {
-                    int elementCluster = 0;
-                    Double minDist = -1.0;
-                    Double distAct;
-                    int i = 0;
-                    for (RowWithLabels representative : representatives) {
-                        i++;
-                        distAct = element.distanceTo(representative);
-                        //System.out.println(distAct);
-                        if (distAct < minDist || minDist < 0) {
-                            minDist = distAct;
-                            elementCluster = i;
-                            //System.out.println("new min ^^^");
-                        }
-                    }
+                    int elementCluster = calculateElementCluster(element);
                     element.addLabel("cluster-" + elementCluster);
                     elementsOnCluster[elementCluster - 1]++;
                     //System.out.println(element);System.out.println();
@@ -67,6 +50,7 @@ public class KMeans implements  Algorithm<Table, String, Row>{
                 //System.out.println("Missing data");
             }
             //System.out.println(Arrays.toString(elementsOnCluster));
+
 
             // recalculate centroids
             // redeclare Representatives and prepare for operations
@@ -122,4 +106,33 @@ public class KMeans implements  Algorithm<Table, String, Row>{
             return "Not trained to guess";
         }
     }
+
+    private void chooseRepresentatives() {
+        for (int i = 0; i < numberClusters; i++) {
+            int act = (int) (seed + i * seed % 1000) % this.table.size();
+            //System.out.println(act);
+            representatives[i] = this.table.getRowAt(act);
+            representatives[i].addLabel("cluster-" + (i + 1));
+            //System.out.println(Representatives[i]);
+        }
+    }
+
+    private int calculateElementCluster(RowWithLabels element) {
+        int elementCluster = 0;
+        Double minDist = -1.0;
+        Double distAct;
+        int i = 0;
+        for (RowWithLabels representative : representatives) {
+            i++;
+            distAct = element.distanceTo(representative);
+            //System.out.println(distAct);
+            if (distAct < minDist || minDist < 0) {
+                minDist = distAct;
+                elementCluster = i;
+                //System.out.println("new min ^^^");
+            }
+        }
+        return elementCluster;
+    }
+
 }
