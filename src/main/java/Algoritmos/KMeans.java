@@ -43,9 +43,8 @@ public class KMeans implements  Algorithm<Table, String, Row>{
             // parallel: count how many elements are there for each cluster
             int[] elementsOnCluster = new int[numberClusters];
             for (int i = 0; i < numberClusters; i++) elementsOnCluster[i] = 0;
-
-            try {
-                for (RowWithLabels element : table.getAllData()) {
+                for (int j =0; j < table.size(); j++) {
+                    RowWithLabels element = table.getRowAt(j);
                     int elementCluster = 0;
                     Double minDist = -1.0;
                     Double distAct;
@@ -64,9 +63,6 @@ public class KMeans implements  Algorithm<Table, String, Row>{
                     elementsOnCluster[elementCluster - 1]++;
                     //System.out.println(element);System.out.println();
                 }
-            } catch (NoDataException e) {
-                //System.out.println("Missing data");
-            }
             //System.out.println(Arrays.toString(elementsOnCluster));
 
             // recalculate centroids
@@ -78,9 +74,9 @@ public class KMeans implements  Algorithm<Table, String, Row>{
                 for (int o = 0; o < regRowSize; o++) Representatives[i].addItem(0.0);
             }
             //System.out.println(Arrays.toString(Representatives));
-            try {
                 // add all data to respective representative
-                for (RowWithLabels element : table.getAllData()) {
+                for (int j =0; j < table.size(); j++) {
+                    RowWithLabels element = table.getRowAt(j);
                     int clustNum = extractCluster(element.getLabel());
                     for (int i = 0; i < regRowSize; i++) {
                         Double newData = Representatives[clustNum - 1].get(i) + element.get(i);
@@ -94,9 +90,6 @@ public class KMeans implements  Algorithm<Table, String, Row>{
                         Representatives[i].set(fixedData, o);
                     }
                 }
-            } catch (NoDataException e) {
-                //System.out.println("Missing data");
-            }
             //System.out.println(Arrays.toString(Representatives));
         }
         // Finished training!
