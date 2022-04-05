@@ -14,15 +14,15 @@ class LinealRegressionTest {
 
     @Test
     void train() {
-        String alpha = "1.255";
-        String beta = "274.85";
+        Double alpha = 1.255;
+        Double beta = 274.85;
 
         gestorRL.train(tabla);
         Double testAlpha=gestorRL.getAlpha();
         Double testBeta=gestorRL.getBeta();
         System.out.println("alpha: "+testAlpha+", beta: "+testBeta);
-        assertEquals(alpha, String.format("%.3f", testAlpha));
-        assertEquals(beta, String.format("%.2f", testBeta));
+        assertEquals(alpha, (double) Math.round(testAlpha * 1000d) / 1000d);
+        assertEquals(beta, (double) Math.round(testBeta * 1000d) / 1000d);
 
     }
 
