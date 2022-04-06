@@ -1,3 +1,5 @@
+package Estructura;
+
 import Estructura.CSV;
 import Estructura.Table;
 import Estructura.TableWithLabels;

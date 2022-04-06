@@ -1,3 +1,5 @@
+package Estructura;
+
 import Estructura.Row;
 import Estructura.Table;
 

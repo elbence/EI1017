@@ -1,3 +1,5 @@
+package Estructura;
+
 import Estructura.RowWithLabels;
 import org.junit.jupiter.api.Test;
 

@@ -1,3 +1,5 @@
+package Algoritmos;
+
 import Algoritmos.KNearestNeighbours;
 import Estructura.CSV;
 import Estructura.RowWithLabels;

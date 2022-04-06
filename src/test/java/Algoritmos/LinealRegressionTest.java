@@ -1,3 +1,5 @@
+package Algoritmos;
+
 import Algoritmos.LinealRegression;
 import Estructura.CSV;
 import Estructura.Table;

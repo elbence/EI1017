@@ -1,3 +1,5 @@
+package Estructura;
+
 import Estructura.RowWithLabels;
 import Estructura.Table;
 import Estructura.TableWithLabels;
