@@ -30,12 +30,6 @@ class TableWithLabelsTest {
         }
     }
 
-    @Test
-    void getAllData(){
-        TableWithLabels tabla= new TableWithLabels();
-        assertThrows(NoDataException.class, () -> tabla.getAllData());
-        RowWithLabels row = new RowWithLabels(etiquetas[0]);
-        tabla.addRow(row);
-        assertDoesNotThrow(() -> tabla.getAllData());
-    }
+
+
 }

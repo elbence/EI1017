@@ -23,8 +23,8 @@ public class KNearestNeighbours implements Algorithm<TableWithLabels, String, Li
         // Compare with every row
         Double minDist = -1.0;
         RowWithLabels minDistRow = sampleRow; // placeholder, and helps to find out if has been changed
-        try {
-            for (RowWithLabels row : data.getAllData()) {
+             for (int i =0; i < data.size(); i++) {
+                 RowWithLabels row = data.getRowAt(i);
                 Double distAct = row.distanceTo(sampleRow);
                 //System.out.println(distAct);
                 if (minDist < 0 || (distAct < minDist && distAct >= 0)) {
@@ -33,9 +33,6 @@ public class KNearestNeighbours implements Algorithm<TableWithLabels, String, Li
                     //System.out.println("found!");
                 }
             }
-        } catch (NoDataException e) {
-            return "No data to match";
-        }
         if (minDistRow != sampleRow) return minDistRow.getLabel();
         return "Not found";
     }

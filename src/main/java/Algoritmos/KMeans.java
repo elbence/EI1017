@@ -4,6 +4,9 @@ import Estructura.*;
 import Exepciones.NoDataException;
 import Exepciones.NotTrainedException;
 
+import java.lang.ref.SoftReference;
+import java.util.Arrays;
+
 public class KMeans implements  Algorithm<Table, String, Row>{
 
     private int numberClusters;
@@ -12,8 +15,6 @@ public class KMeans implements  Algorithm<Table, String, Row>{
 
     private RowWithLabels[] representatives;
     private TableWithLabels table;
-
-    // comment para probar push
 
     public KMeans(int numberClusters, int iterations, long seed) {
         this.numberClusters = numberClusters;
@@ -38,16 +39,25 @@ public class KMeans implements  Algorithm<Table, String, Row>{
             // parallel: count how many elements are there for each cluster
             int[] elementsOnCluster = new int[numberClusters];
             for (int i = 0; i < numberClusters; i++) elementsOnCluster[i] = 0;
-
-            try {
-                for (RowWithLabels element : table.getAllData()) {
-                    int elementCluster = calculateElementCluster(element);
-                    element.addLabel("cluster-" + elementCluster);
-                    elementsOnCluster[elementCluster - 1]++;
-                    //System.out.println(element);System.out.println();
+            for (int j =0; j < table.size(); j++) {
+                RowWithLabels element = table.getRowAt(j);
+                int elementCluster = 0;
+                Double minDist = -1.0;
+                Double distAct;
+                int i = 0;
+                for (RowWithLabels representative : Representatives) {
+                    i++;
+                    distAct = element.distanceTo(representative);
+                    //System.out.println(distAct);
+                    if (distAct < minDist || minDist < 0) {
+                        minDist = distAct;
+                        elementCluster = i;
+                        //System.out.println("new min ^^^");
+                    }
                 }
-            } catch (NoDataException e) {
-                //System.out.println("Missing data");
+                element.addLabel("cluster-" + elementCluster);
+                elementsOnCluster[elementCluster - 1]++;
+                //System.out.println(element);System.out.println();
             }
             //System.out.println(Arrays.toString(elementsOnCluster));
 
@@ -61,9 +71,9 @@ public class KMeans implements  Algorithm<Table, String, Row>{
                 for (int o = 0; o < regRowSize; o++) representatives[i].addItem(0.0);
             }
             //System.out.println(Arrays.toString(Representatives));
-            try {
                 // add all data to respective representative
-                for (RowWithLabels element : table.getAllData()) {
+                for (int j =0; j < table.size(); j++) {
+                    RowWithLabels element = table.getRowAt(j);
                     int clustNum = extractCluster(element.getLabel());
                     for (int i = 0; i < regRowSize; i++) {
                         Double newData = representatives[clustNum - 1].get(i) + element.get(i);
@@ -77,9 +87,6 @@ public class KMeans implements  Algorithm<Table, String, Row>{
                         representatives[i].set(fixedData, o);
                     }
                 }
-            } catch (NoDataException e) {
-                //System.out.println("Missing data");
-            }
             //System.out.println(Arrays.toString(Representatives));
         }
         // Finished training!

@@ -36,7 +36,7 @@ public class LinealRegression implements Algorithm<Table, Double, Double>{
         beta = mediay-(alpha*mediax);
     }
     public Double estimate(Double sample) throws NotTrainedException{
-        if (alpha == 0 && beta == 0) throw new NotTrainedException();
+        if (alpha == 0.0 && beta == 0.0) throw new NotTrainedException();
         return (alpha * sample)+beta;
     }
 
