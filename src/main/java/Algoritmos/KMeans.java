@@ -1,11 +1,7 @@
 package Algoritmos;
 
 import Estructura.*;
-import Exepciones.NoDataException;
 import Exepciones.NotTrainedException;
-
-import java.lang.ref.SoftReference;
-import java.util.Arrays;
 
 public class KMeans implements  Algorithm<Table, String, Row>{
 
@@ -16,8 +12,12 @@ public class KMeans implements  Algorithm<Table, String, Row>{
     private RowWithLabels[] representatives;
     private TableWithLabels table;
 
+    private int[] elementsOnCluster;
+
     public KMeans(int numberClusters, int iterations, long seed) {
         this.numberClusters = numberClusters;
+        elementsOnCluster = new int[numberClusters];
+        restartCounter();
         this.iterations = iterations;
         this.seed = seed;
         representatives = new RowWithLabels[numberClusters];
@@ -26,35 +26,22 @@ public class KMeans implements  Algorithm<Table, String, Row>{
     @Override
     public void train(Table data) {
 
+        // save given data
         table = (TableWithLabels) data;
 
-        // choose representatives
+        // choose representatives from data
         chooseRepresentatives();
 
         // repeat rest of steps
-        for (int iters = 0; iters < iterations; iters++) {
+        for (int current_iteration = 0; current_iteration < iterations; current_iteration++) {
 
-            // calculate distance of each element to every centroid
-            // and assign proper cluster tag
-            // parallel: count how many elements are there for each cluster
-            int[] elementsOnCluster = new int[numberClusters];
-            for (int i = 0; i < numberClusters; i++) elementsOnCluster[i] = 0;
+            // restart vector for counting elements on clusters
+            restartCounter();
+
+            // calculate the cluster of each element & assign tag + count how many elements per cluster there are
             for (int j =0; j < table.size(); j++) {
                 RowWithLabels element = table.getRowAt(j);
-                int elementCluster = 0;
-                Double minDist = -1.0;
-                Double distAct;
-                int i = 0;
-                for (RowWithLabels representative : Representatives) {
-                    i++;
-                    distAct = element.distanceTo(representative);
-                    //System.out.println(distAct);
-                    if (distAct < minDist || minDist < 0) {
-                        minDist = distAct;
-                        elementCluster = i;
-                        //System.out.println("new min ^^^");
-                    }
-                }
+                int elementCluster = calculateElementCluster(element);
                 element.addLabel("cluster-" + elementCluster);
                 elementsOnCluster[elementCluster - 1]++;
                 //System.out.println(element);System.out.println();
@@ -71,22 +58,23 @@ public class KMeans implements  Algorithm<Table, String, Row>{
                 for (int o = 0; o < regRowSize; o++) representatives[i].addItem(0.0);
             }
             //System.out.println(Arrays.toString(Representatives));
-                // add all data to respective representative
-                for (int j =0; j < table.size(); j++) {
-                    RowWithLabels element = table.getRowAt(j);
-                    int clustNum = extractCluster(element.getLabel());
-                    for (int i = 0; i < regRowSize; i++) {
-                        Double newData = representatives[clustNum - 1].get(i) + element.get(i);
-                        representatives[clustNum - 1].set(newData, i);
-                    }
+
+            // add all data to respective representative
+            for (int j =0; j < table.size(); j++) {
+                RowWithLabels element = table.getRowAt(j);
+                int clustNum = extractCluster(element.getLabel());
+                for (int i = 0; i < regRowSize; i++) {
+                    Double newData = representatives[clustNum - 1].get(i) + element.get(i);
+                    representatives[clustNum - 1].set(newData, i);
                 }
-                // mean data to the number of members it had
-                for (int i = 0; i < numberClusters; i++) {
-                    for (int o = 0; o < regRowSize; o++) {
-                        Double fixedData = representatives[i].get(o) / elementsOnCluster[i];
-                        representatives[i].set(fixedData, o);
-                    }
+            }
+            // mean data to the number of members it had
+            for (int i = 0; i < numberClusters; i++) {
+                for (int o = 0; o < regRowSize; o++) {
+                    Double fixedData = representatives[i].get(o) / elementsOnCluster[i];
+                    representatives[i].set(fixedData, o);
                 }
+            }
             //System.out.println(Arrays.toString(Representatives));
         }
         // Finished training!
@@ -140,6 +128,10 @@ public class KMeans implements  Algorithm<Table, String, Row>{
             }
         }
         return elementCluster;
+    }
+
+    private void restartCounter() {
+        for (int i = 0; i < numberClusters; i++) elementsOnCluster[i] = 0;
     }
 
 }
