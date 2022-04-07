@@ -25,57 +25,25 @@ public class KMeans implements  Algorithm<Table, String, Row>{
 
     @Override
     public void train(Table data) {
-
+        //deal with empty data
+        if (data == null || data.isEmpty()) return;
         // save given data
         table = (TableWithLabels) data;
-
         // choose representatives from data
         chooseRepresentatives();
-
         // repeat rest of steps
         for (int current_iteration = 0; current_iteration < iterations; current_iteration++) {
-
             // restart vector for counting elements on clusters
             restartCounter();
-
             // calculate the cluster of each element & assign tag + count how many elements per cluster there are
             for (int j =0; j < table.size(); j++) {
                 RowWithLabels element = table.getRowAt(j);
                 int elementCluster = calculateElementCluster(element);
-                element.addLabel("cluster-" + elementCluster);
-                elementsOnCluster[elementCluster - 1]++;
-                //System.out.println(element);System.out.println();
+                assignCluster(element, elementCluster);
+                increaseClusterMembers(elementCluster);
             }
-            //System.out.println(Arrays.toString(elementsOnCluster));
-
-
             // recalculate centroids
-            // redeclare Representatives and prepare for operations
-            int regRowSize = representatives[0].size();
-            for (int i = 0; i < numberClusters; i++) {
-                representatives[i] = new RowWithLabels();
-                representatives[i].addLabel("cluster-" + (i + 1));
-                for (int o = 0; o < regRowSize; o++) representatives[i].addItem(0.0);
-            }
-            //System.out.println(Arrays.toString(Representatives));
-
-            // add all data to respective representative
-            for (int j =0; j < table.size(); j++) {
-                RowWithLabels element = table.getRowAt(j);
-                int clustNum = extractCluster(element.getLabel());
-                for (int i = 0; i < regRowSize; i++) {
-                    Double newData = representatives[clustNum - 1].get(i) + element.get(i);
-                    representatives[clustNum - 1].set(newData, i);
-                }
-            }
-            // mean data to the number of members it had
-            for (int i = 0; i < numberClusters; i++) {
-                for (int o = 0; o < regRowSize; o++) {
-                    Double fixedData = representatives[i].get(o) / elementsOnCluster[i];
-                    representatives[i].set(fixedData, o);
-                }
-            }
-            //System.out.println(Arrays.toString(Representatives));
+            recalculateRepresentatives();
         }
         // Finished training!
     }
@@ -132,6 +100,47 @@ public class KMeans implements  Algorithm<Table, String, Row>{
 
     private void restartCounter() {
         for (int i = 0; i < numberClusters; i++) elementsOnCluster[i] = 0;
+    }
+
+    private void assignCluster(RowWithLabels element, int elementCluster) {
+        element.addLabel("cluster-" + elementCluster);
+    }
+
+    private void increaseClusterMembers(int elementCluster) {
+        elementsOnCluster[elementCluster - 1]++;
+    }
+
+    private void decreaseClusterMembers(int elementCluster) {
+        elementsOnCluster[elementCluster - 1]--;
+    }
+
+    private void recalculateRepresentatives() {
+        // redeclare Representatives and prepare for operations
+        int regRowSize = representatives[0].size();
+        for (int i = 0; i < numberClusters; i++) {
+            representatives[i] = new RowWithLabels();
+            representatives[i].addLabel("cluster-" + (i + 1));
+            for (int o = 0; o < regRowSize; o++) representatives[i].addItem(0.0);
+        }
+        //System.out.println(Arrays.toString(Representatives));
+
+        // add all data to respective representative
+        for (int j =0; j < table.size(); j++) {
+            RowWithLabels element = table.getRowAt(j);
+            int clustNum = extractCluster(element.getLabel());
+            for (int i = 0; i < regRowSize; i++) {
+                Double newData = representatives[clustNum - 1].get(i) + element.get(i);
+                representatives[clustNum - 1].set(newData, i);
+            }
+        }
+        // mean data to the number of members it had
+        for (int i = 0; i < numberClusters; i++) {
+            for (int o = 0; o < regRowSize; o++) {
+                Double fixedData = representatives[i].get(o) / elementsOnCluster[i];
+                representatives[i].set(fixedData, o);
+            }
+        }
+
     }
 
 }
