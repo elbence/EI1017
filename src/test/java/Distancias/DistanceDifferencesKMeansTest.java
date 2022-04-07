@@ -13,13 +13,21 @@ public class DistanceDifferencesKMeansTest {
     @Test
     void estimate() {
 
+        int maxIterations = 6; // recommended 5 - 10
+        int numberClusters = 10; // more means more exception probability
+        int trainIterations = 20; // results may vary, high could tend to more exceptions
+
         KMeans kmeans;
         String[] EUCguess = new String[5];
         String[] MANguess = new String[5];
         int[] randomIndexes = new int[5];
         int exceptionsFound = 0;
 
-        int maxIterations = 6; // recommended 5 - 10
+        System.out.println("CURRENTLY:");
+        System.out.println(" * Total Clusters ---- " + numberClusters);
+        System.out.println(" * Train Iterations -- " + trainIterations);
+        System.out.println(" * Max. Tries -------- " + maxIterations);
+        System.out.println();
 
         for (int o = 0; o < maxIterations; o++) { // repeat maxIterations times to search
 
@@ -28,7 +36,7 @@ public class DistanceDifferencesKMeansTest {
 
             for (int i = 0; i < 5; i++) randomIndexes[i] = (int) Math.round(Math.random() * (table.size()-1));
 
-            kmeans = new KMeans(6, 1, 234521, new EuclideanDistance());
+            kmeans = new KMeans(numberClusters, trainIterations, 234521, new EuclideanDistance());
             kmeans.train(table);
 
             for (int i = 0; i < 5; i++)
@@ -62,7 +70,7 @@ public class DistanceDifferencesKMeansTest {
 
         }
 
-        if (exceptionsFound == 0) System.out.println("If no exceptions were found try raising maxIterations value or just trying again the test");
+        if (exceptionsFound == 0) System.out.println("If no exceptions were found try raising maxIterations value or just trying again the test, there are some variables that could be modified if wanted too...");
 
     }
 

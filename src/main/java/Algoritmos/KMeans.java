@@ -20,7 +20,7 @@ public class KMeans implements  Algorithm<Table, String, Row>, DistanceClient {
     public KMeans(int numberClusters, int iterations, long seed, Distance distance) {
         this.numberClusters = numberClusters;
         elementsOnCluster = new int[numberClusters];
-        restartCounter();
+        restartClusterElementsCounter();
         this.iterations = iterations;
         this.seed = seed;
         representatives = new RowWithLabels[numberClusters];
@@ -38,12 +38,12 @@ public class KMeans implements  Algorithm<Table, String, Row>, DistanceClient {
         // repeat rest of steps
         for (int current_iteration = 0; current_iteration < iterations; current_iteration++) {
             // restart vector for counting elements on clusters
-            restartCounter();
+            restartClusterElementsCounter();
             // calculate the cluster of each element & assign tag + count how many elements per cluster there are
             for (int j =0; j < table.size(); j++) {
                 RowWithLabels element = table.getRowAt(j);
                 int elementCluster = calculateElementCluster(element);
-                assignCluster(element, elementCluster);
+                assignClusterTag(element, elementCluster);
                 increaseClusterMembers(elementCluster);
             }
             // recalculate centroids
@@ -102,11 +102,11 @@ public class KMeans implements  Algorithm<Table, String, Row>, DistanceClient {
         return elementCluster;
     }
 
-    private void restartCounter() {
+    private void restartClusterElementsCounter() {
         for (int i = 0; i < numberClusters; i++) elementsOnCluster[i] = 0;
     }
 
-    private void assignCluster(RowWithLabels element, int elementCluster) {
+    private void assignClusterTag(RowWithLabels element, int elementCluster) {
         element.addLabel("cluster-" + elementCluster);
     }
 
