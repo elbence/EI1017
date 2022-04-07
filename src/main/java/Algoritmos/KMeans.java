@@ -1,5 +1,9 @@
 package Algoritmos;
 
+import Distancias.Distance;
+import Distancias.DistanceFactory;
+import Distancias.DistanceType;
+import Distancias.Factory;
 import Estructura.*;
 import Exepciones.NotTrainedException;
 
@@ -87,7 +91,9 @@ public class KMeans implements  Algorithm<Table, String, Row>{
         int i = 0;
         for (RowWithLabels representative : representatives) {
             i++;
-            distAct = element.distanceTo(representative);
+            Factory distancia = new DistanceFactory();
+            Distance eucDist = distancia.getDistance(DistanceType.EUCLIDEAN);
+            distAct = eucDist.distanceTo(element, representative);
             //System.out.println(distAct);
             if (distAct < minDist || minDist < 0) {
                 minDist = distAct;
