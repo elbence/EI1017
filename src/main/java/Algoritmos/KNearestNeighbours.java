@@ -13,6 +13,12 @@ public class KNearestNeighbours implements Algorithm<TableWithLabels, String, Li
 
     private TableWithLabels data;
 
+    private Distance distance;
+
+    public KNearestNeighbours( Distance distance ) {
+        this.distance = distance;
+    }
+
     public void train (TableWithLabels data) {
         this.data = data;
     }
@@ -27,9 +33,7 @@ public class KNearestNeighbours implements Algorithm<TableWithLabels, String, Li
         RowWithLabels minDistRow = sampleRow; // placeholder, and helps to find out if has been changed
              for (int i =0; i < data.size(); i++) {
                  RowWithLabels row = data.getRowAt(i);
-                 Factory distancia = new DistanceFactory();
-                 Distance eucDist = distancia.getDistance(DistanceType.EUCLIDEAN);
-                 Double distAct = eucDist.calculateDistance(row.getData(), sampleRow.getData());
+                 Double distAct = distance.calculateDistance(row.getData(), sampleRow.getData());
                 //Double distAct = row.distanceTo(sampleRow);
                 //System.out.println(distAct);
                 if (minDist < 0 || (distAct < minDist && distAct >= 0)) {

@@ -18,13 +18,16 @@ public class KMeans implements  Algorithm<Table, String, Row>{
 
     private int[] elementsOnCluster;
 
-    public KMeans(int numberClusters, int iterations, long seed) {
+    private Distance distance;
+
+    public KMeans(int numberClusters, int iterations, long seed, Distance distance) {
         this.numberClusters = numberClusters;
         elementsOnCluster = new int[numberClusters];
         restartCounter();
         this.iterations = iterations;
         this.seed = seed;
         representatives = new RowWithLabels[numberClusters];
+        this.distance = distance;
     }
 
     @Override
@@ -63,7 +66,7 @@ public class KMeans implements  Algorithm<Table, String, Row>{
         TableWithLabels repTable = new TableWithLabels();
         for (RowWithLabels row : representatives) repTable.addRow(row);
 
-        KNearestNeighbours knn = new KNearestNeighbours();
+        KNearestNeighbours knn = new KNearestNeighbours(distance);
         knn.train(repTable);
 
         try {
@@ -91,9 +94,7 @@ public class KMeans implements  Algorithm<Table, String, Row>{
         int i = 0;
         for (RowWithLabels representative : representatives) {
             i++;
-            Factory distancia = new DistanceFactory();
-            Distance eucDist = distancia.getDistance(DistanceType.EUCLIDEAN);
-            distAct = eucDist.calculateDistance(element.getData(), representative.getData());
+            distAct = distance.calculateDistance(element.getData(), representative.getData());
             //System.out.println(distAct);
             if (distAct < minDist || minDist < 0) {
                 minDist = distAct;
