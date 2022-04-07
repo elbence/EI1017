@@ -1,13 +1,10 @@
 package Algoritmos;
 
-import Distancias.Distance;
-import Distancias.DistanceFactory;
-import Distancias.DistanceType;
-import Distancias.Factory;
+import Distancias.*;
 import Estructura.*;
 import Exepciones.NotTrainedException;
 
-public class KMeans implements  Algorithm<Table, String, Row>{
+public class KMeans implements  Algorithm<Table, String, Row>, DistanceClient {
 
     private int numberClusters;
     private int iterations;
@@ -148,6 +145,11 @@ public class KMeans implements  Algorithm<Table, String, Row>{
             }
         }
 
+    }
+
+    @Override
+    public void setDistance(Distance distance) {
+        this.distance = distance;
     }
 
 }

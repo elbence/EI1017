@@ -1,15 +1,12 @@
 package Algoritmos;
 
-import Distancias.Distance;
-import Distancias.DistanceFactory;
-import Distancias.DistanceType;
-import Distancias.Factory;
+import Distancias.*;
 import Estructura.*;
 import Exepciones.NotTrainedException;
 
 import java.util.List;
 
-public class KNearestNeighbours implements Algorithm<TableWithLabels, String, List<Double>>{
+public class KNearestNeighbours implements Algorithm<TableWithLabels, String, List<Double>>, DistanceClient {
 
     private TableWithLabels data;
 
@@ -44,6 +41,11 @@ public class KNearestNeighbours implements Algorithm<TableWithLabels, String, Li
             }
         if (minDistRow != sampleRow) return minDistRow.getLabel();
         return "Not found";
+    }
+
+    @Override
+    public void setDistance(Distance distance) {
+        this.distance = distance;
     }
 
 }
