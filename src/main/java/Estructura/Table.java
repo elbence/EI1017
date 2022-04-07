@@ -46,4 +46,8 @@ public class Table {
         for (Row row : rows) tmp += ( "\n" + row);
         return tmp;
     }
+
+    public boolean isEmpty() {
+        return size() == 0;
+    }
 }
