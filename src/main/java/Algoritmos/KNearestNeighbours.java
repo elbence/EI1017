@@ -1,8 +1,10 @@
 package Algoritmos;
 
-import Estructura.RowWithLabels;
-import Estructura.TableWithLabels;
-import Exepciones.NoDataException;
+import Distancias.Distance;
+import Distancias.DistanceFactory;
+import Distancias.DistanceType;
+import Distancias.Factory;
+import Estructura.*;
 import Exepciones.NotTrainedException;
 
 import java.util.List;
@@ -25,7 +27,10 @@ public class KNearestNeighbours implements Algorithm<TableWithLabels, String, Li
         RowWithLabels minDistRow = sampleRow; // placeholder, and helps to find out if has been changed
              for (int i =0; i < data.size(); i++) {
                  RowWithLabels row = data.getRowAt(i);
-                Double distAct = row.distanceTo(sampleRow);
+                 Factory distancia = new DistanceFactory();
+                 Distance eucDist = distancia.getDistance(DistanceType.EUCLIDEAN);
+                 Double distAct = eucDist.distanceTo(row, sampleRow);
+                //Double distAct = row.distanceTo(sampleRow);
                 //System.out.println(distAct);
                 if (minDist < 0 || (distAct < minDist && distAct >= 0)) {
                     minDist = distAct;
