@@ -5,8 +5,6 @@ import Estructura.CSV;
 import Estructura.TableWithLabels;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class DistanceDifferencesKMeansTest {
 
     private CSV gestorCSV = new CSV();
