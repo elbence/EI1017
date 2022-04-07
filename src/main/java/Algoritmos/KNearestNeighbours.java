@@ -29,7 +29,7 @@ public class KNearestNeighbours implements Algorithm<TableWithLabels, String, Li
                  RowWithLabels row = data.getRowAt(i);
                  Factory distancia = new DistanceFactory();
                  Distance eucDist = distancia.getDistance(DistanceType.EUCLIDEAN);
-                 Double distAct = eucDist.distanceTo(row, sampleRow);
+                 Double distAct = eucDist.calculateDistance(row.getData(), sampleRow.getData());
                 //Double distAct = row.distanceTo(sampleRow);
                 //System.out.println(distAct);
                 if (minDist < 0 || (distAct < minDist && distAct >= 0)) {

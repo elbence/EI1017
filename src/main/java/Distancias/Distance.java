@@ -2,6 +2,8 @@ package Distancias;
 
 import Estructura.Row;
 
+import java.util.List;
+
 public interface Distance {
-    Double distanceTo(Row row1, Row row2);
+    Double calculateDistance(List<Double> p, List<Double> q);
 }

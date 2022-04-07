@@ -93,7 +93,7 @@ public class KMeans implements  Algorithm<Table, String, Row>{
             i++;
             Factory distancia = new DistanceFactory();
             Distance eucDist = distancia.getDistance(DistanceType.EUCLIDEAN);
-            distAct = eucDist.distanceTo(element, representative);
+            distAct = eucDist.calculateDistance(element.getData(), representative.getData());
             //System.out.println(distAct);
             if (distAct < minDist || minDist < 0) {
                 minDist = distAct;
