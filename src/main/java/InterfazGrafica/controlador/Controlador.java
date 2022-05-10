@@ -6,4 +6,6 @@ public interface Controlador {
     void openFile();
 
     void actualizaDistancia(Number valorInicial, Number valorActual);
+
+    void estimateValue();
 }

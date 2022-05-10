@@ -30,12 +30,18 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
     // * OTHER VARS
     private ChoiceBox selectYAxisChBox;
     private ScatterChart scatterChart;
+    private NumberAxis yAxis;
+    private NumberAxis xAxis;
+    private List<String> cabeceras;
     private ChoiceBox tipoDistanciaChbox;
     private TextField estimacionPuntoTxt;
     private ChoiceBox selectXAxisChBox;
+    private TextField anadePuntoTxt;
 
     private int selectedY;
     private int selectedX;
+
+    private String estimadaAnterior;
 
 
     public ImplementacionVista(final Stage stage) {
@@ -73,10 +79,10 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         } );
 
         // + 2 chart
-            NumberAxis xAxis = new NumberAxis();
+            xAxis = new NumberAxis();
             xAxis.setLabel("X");
 
-            NumberAxis yAxis = new NumberAxis();
+            yAxis = new NumberAxis();
             yAxis.setLabel("Y");
 
         scatterChart = new ScatterChart(xAxis, yAxis);
@@ -103,7 +109,7 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         } );
 
         // - (3) añadePunto TXT
-        TextField anadePuntoTxt = new TextField("New Point");
+        anadePuntoTxt = new TextField("New Point");
 
         // - (4) estimacionPunto TXT
         estimacionPuntoTxt = new TextField("None");
@@ -111,7 +117,7 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
 
         // - (5) estimate BTN
         Button estimateBtn = new Button("Estimate");
-        estimateBtn.setOnAction(actionEvent -> controlador.openFile());
+        estimateBtn.setOnAction(actionEvent -> controlador.estimateValue());
 
         // - ADD TO VBOX
         controlButtons.getChildren().addAll(openFileBtn, tipoDistanciaChbox, anadePuntoTxt, estimacionPuntoTxt, estimateBtn);
@@ -152,27 +158,29 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
     @Override
     public void nuevoDocumento() {
         if (tipoDistanciaChbox.isDisabled()) tipoDistanciaChbox.setDisable(false);
-        List<String> tipos = modelo.getHeaders();
-        tipos.remove(tipos.size()-1);
+        cabeceras = modelo.getHeaders();
+        cabeceras.remove(cabeceras.size()-1);
 
-        selectYAxisChBox.getItems().addAll(tipos);
-        selectYAxisChBox.setValue(tipos.get(0));
+        selectYAxisChBox.getItems().addAll(cabeceras);
+        selectYAxisChBox.setValue(cabeceras.get(0));
 
-        selectXAxisChBox.getItems().addAll(tipos);
-        selectXAxisChBox.setValue(tipos.get(1));
+        selectXAxisChBox.getItems().addAll(cabeceras);
+        selectXAxisChBox.setValue(cabeceras.get(1));
 
         inicializaScatterChartValues();
-
     }
 
     private void inicializaScatterChartValues() {
         selectedY = 0;
         selectedX = 1;
         redrawPoints();
-
     }
 
     private void redrawPoints() {
+
+        yAxis.setLabel(cabeceras.get(selectedY));
+        xAxis.setLabel(cabeceras.get(selectedX));
+
         scatterChart.getData().removeAll(scatterChart.getData());
         // dependiente de los tipos de series que hay en el csv
         TableWithLabels table = modelo.getDataTable();
@@ -189,4 +197,8 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         for (int i = 0; i < tipos.size(); i++) scatterChart.getData().add(conjuntoSeries.get(i));
     }
 
+    @Override
+    public String getNewPoint() {
+        return anadePuntoTxt.getText();
+    }
 }

@@ -13,6 +13,8 @@ import InterfazGrafica.vista.InterrogaVista;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.regex.Pattern;
 
 public class ImplementacionControlador implements Controlador {
 
@@ -58,6 +60,45 @@ public class ImplementacionControlador implements Controlador {
             tipoDistancia = DistanceType.MANHATTAN;
         }
         modelo.setTipoDistancia(tipoDistancia);
+    }
+
+    @Override
+    public void estimateValue() {
+        String newPoint = vista.getNewPoint();
+        System.out.println("Estimating:");
+        if(newPoint != null && validaPunto(newPoint)) {
+            System.out.println("Valid!");
+            double[] puntoDouble = toDoubleArray(newPoint);
+            System.out.println(Arrays.toString(puntoDouble));
+        }
+        System.out.println();
+    }
+
+    private double[] toDoubleArray(String newPoint) {
+        String[] strArray = newPoint.split(",");
+        double[] array = new double[strArray.length];
+        for (int i = 0; i < strArray.length; i++) {
+            array[i] = Double.parseDouble(strArray[i]);
+        }
+        return array;
+    }
+
+    private boolean validaPunto(String newPoint) {
+        System.out.println(newPoint);
+        String[] array = newPoint.split(",");
+        if (array.length != 4) return false;
+        for (String act : array) if (!isNumeric(act)) return false;
+        return true;
+    }
+
+    private boolean isNumeric(String act) {
+        if (act == null) return false;
+        try {
+            Double.parseDouble(act);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public void setModelo(CambioModelo modelo) {
