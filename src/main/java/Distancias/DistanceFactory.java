@@ -6,6 +6,9 @@ public class DistanceFactory implements Factory{
         if (distanceType == DistanceType.EUCLIDEAN){
             return new EuclideanDistance();
         }
+        if (distanceType == DistanceType.MANHATTAN){
+            return new ManhattanDistance();
+        }
         return null;
     }
 }
