@@ -1,6 +1,9 @@
 package InterfazGrafica.modelo;
 
-import InterfazGrafica.vista.ImplementacionVista;
+import Distancias.DistanceType;
+
+import java.io.File;
 
 public interface CambioModelo {
+    void setFile(File selectedFile, DistanceType tipoDistancia);
 }

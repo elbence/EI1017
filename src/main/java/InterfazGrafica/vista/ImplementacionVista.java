@@ -1,32 +1,43 @@
 package InterfazGrafica.vista;
 
+import Estructura.RowWithLabels;
+import Estructura.TableWithLabels;
 import InterfazGrafica.controlador.Controlador;
-import InterfazGrafica.controlador.ImplementacionControlador;
-import InterfazGrafica.modelo.ImplementacionModelo;
 import InterfazGrafica.modelo.InterrogaModelo;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ImplementacionVista implements InformaVista, InterrogaVista {
 
+    // * MAIN VARS
     private final Stage stage;
     private Controlador controlador;
     private InterrogaModelo modelo;
-    private TextField tfNombre;
-    private Label lContador;
+
+    // * OTHER VARS
+    private ChoiceBox selectYAxisChBox;
+    private ScatterChart scatterChart;
+    private ChoiceBox tipoDistanciaChbox;
+    private TextField estimacionPuntoTxt;
+    private ChoiceBox selectXAxisChBox;
+
+    private int selectedY;
+    private int selectedX;
+
+
     public ImplementacionVista(final Stage stage) {
         this.stage = stage;
     }
@@ -53,7 +64,13 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         firstLine.setAlignment(Pos.CENTER_LEFT);
 
         // + 1 selection
-        ChoiceBox selectYAxisChBox = new ChoiceBox();
+        // will contain 1 entry per type of
+        selectYAxisChBox = new ChoiceBox();
+        selectYAxisChBox.setMinWidth(80);
+        selectYAxisChBox.getSelectionModel().selectedIndexProperty().addListener((item, valorInicial, valorActual) -> {
+            selectedY = valorActual.intValue();
+            redrawPoints();
+        } );
 
         // + 2 chart
             NumberAxis xAxis = new NumberAxis();
@@ -62,38 +79,53 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
             NumberAxis yAxis = new NumberAxis();
             yAxis.setLabel("Y");
 
-        ScatterChart scatterChart = new ScatterChart(xAxis, yAxis);
+        scatterChart = new ScatterChart(xAxis, yAxis);
         scatterChart.legendVisibleProperty().setValue(false);
         scatterChart.setMinSize(250, 250);
         scatterChart.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
-            XYChart.Series series = new XYChart.Series();
-            scatterChart.getData().add(series);
 
         // + 3 vbox
         VBox controlButtons = new VBox();
         controlButtons.setAlignment(Pos.CENTER_LEFT);
         controlButtons.setMinWidth(100);
-        // - openFile BTN
+
+        // - (1) openFile BTN
         Button openFileBtn = new Button("Open File");
         openFileBtn.setOnAction(actionEvent -> controlador.openFile());
-        // - tipoDistancia CHBOX
-        ChoiceBox tipoDistanciaChbox = new ChoiceBox();
+
+        // - (2) tipoDistancia CHBOX
+        tipoDistanciaChbox = new ChoiceBox();
+        tipoDistanciaChbox.getItems().addAll("EUCLIDEAN", "MANHATTAN");
+        tipoDistanciaChbox.setValue("EUCLIDEAN");
         tipoDistanciaChbox.setDisable(true);
-        // - añadePunto TXT
+        tipoDistanciaChbox.getSelectionModel().selectedIndexProperty().addListener((item, valorInicial, valorActual) -> {
+            controlador.actualizaDistancia(valorInicial, valorActual);
+        } );
+
+        // - (3) añadePunto TXT
         TextField anadePuntoTxt = new TextField("New Point");
-        // - estimate BTN
+
+        // - (4) estimacionPunto TXT
+        estimacionPuntoTxt = new TextField("None");
+        estimacionPuntoTxt.setDisable(true);
+
+        // - (5) estimate BTN
         Button estimateBtn = new Button("Estimate");
         estimateBtn.setOnAction(actionEvent -> controlador.openFile());
+
         // - ADD TO VBOX
-        controlButtons.getChildren().addAll(openFileBtn, tipoDistanciaChbox, anadePuntoTxt, estimateBtn);
+        controlButtons.getChildren().addAll(openFileBtn, tipoDistanciaChbox, anadePuntoTxt, estimacionPuntoTxt, estimateBtn);
 
         // * SECOND LINE
         HBox secondLine = new HBox();
         secondLine.setAlignment(Pos.TOP_CENTER);
 
         // + 1
-        ChoiceBox selectXAxisChBox = new ChoiceBox();
+        selectXAxisChBox = new ChoiceBox();
+        selectXAxisChBox.getSelectionModel().selectedIndexProperty().addListener((item, valorInicial, valorActual) -> {
+            selectedX = valorActual.intValue();
+            redrawPoints();
+        } );
 
 
         // * GROW MODIFIERS
@@ -101,9 +133,6 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         VBox.setVgrow(firstLine, Priority.ALWAYS);
         // + hbox for components
         HBox.setHgrow(scatterChart, Priority.ALWAYS);
-        HBox.setHgrow(openFileBtn, Priority.NEVER);
-        HBox.setHgrow(selectYAxisChBox, Priority.NEVER);
-
 
         // * ADD EVERYTHING
         // + 1 line
@@ -115,5 +144,51 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
 
         stage.setScene(new Scene(root, 400, 400));
         stage.show();
+
+        // ! COMUNICATION METHODS
     }
+
+
+    @Override
+    public void nuevoDocumento() {
+        if (tipoDistanciaChbox.isDisabled()) tipoDistanciaChbox.setDisable(false);
+        List<String> tipos = modelo.getHeaders();
+        tipos.remove(tipos.size()-1);
+
+        selectYAxisChBox.getItems().addAll(tipos);
+        selectYAxisChBox.setValue(tipos.get(0));
+
+        selectXAxisChBox.getItems().addAll(tipos);
+        selectXAxisChBox.setValue(tipos.get(1));
+
+        inicializaScatterChartValues();
+
+
+
+    }
+
+    private void inicializaScatterChartValues() {
+        selectedY = 0;
+        selectedX = 1;
+        redrawPoints();
+
+    }
+
+    private void redrawPoints() {
+        scatterChart.getData().removeAll(scatterChart.getData());
+        // dependiente de los tipos de series que hay en el csv
+        TableWithLabels table = modelo.getDataTable();
+        List<String> tipos = modelo.getTypes();
+
+        List<XYChart.Series> conjuntoSeries = new ArrayList<>();
+        for (int i = 0; i < tipos.size(); i++) conjuntoSeries.add(new XYChart.Series());
+
+        for (int i = 0; i < table.size(); i++) {
+            RowWithLabels rowAct = table.getRowAt(i);
+            conjuntoSeries.get(tipos.indexOf(rowAct.getLabel())).getData().add(new XYChart.Data(rowAct.get(selectedX),rowAct.get(selectedY)));
+        }
+
+        for (int i = 0; i < tipos.size(); i++) scatterChart.getData().add(conjuntoSeries.get(i));
+    }
+
 }
