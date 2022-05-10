@@ -1,7 +1,7 @@
 package Algoritmos;
 
 import Algoritmos.KNearestNeighbours;
-import Distancias.EuclideanDistance;
+import Distancias.*;
 import Estructura.CSV;
 import Estructura.RowWithLabels;
 import Estructura.TableWithLabels;
@@ -17,7 +17,9 @@ class KNearestNeighboursTest {
 
     @Test
     void estimate() {
-        KNearestNeighbours knn = new KNearestNeighbours(new EuclideanDistance());
+        Factory distancia = new DistanceFactory();
+        Distance eucdist = distancia.getDistance(DistanceType.EUCLIDEAN);
+        KNearestNeighbours knn = new KNearestNeighbours(eucdist);
         knn.train(table);
         try {
             RowWithLabels rowAct = table.getRowAt(0);
@@ -51,7 +53,7 @@ class KNearestNeighboursTest {
         catch (NotTrainedException e){
             e.printStackTrace();
         }
-        KNearestNeighbours knn2 = new KNearestNeighbours(new EuclideanDistance());
+        KNearestNeighbours knn2 = new KNearestNeighbours(eucdist);
         RowWithLabels row2 = table.getRowAt(0);
         assertThrows(NotTrainedException.class, () -> knn2.estimate(row2.getData()));
         knn2.train(table);
