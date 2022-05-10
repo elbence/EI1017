@@ -39,7 +39,7 @@ public class ImplementacionControlador implements Controlador {
         FileChooser fc = new FileChooser();
         File selectedFile = fc.showOpenDialog(null);
 
-        if (selectedFile.isFile() && checkFileExtension(selectedFile.getAbsolutePath())) {
+        if (selectedFile != null && selectedFile.isFile() && checkFileExtension(selectedFile.getAbsolutePath())) {
             System.out.println("Opening: " + selectedFile.getName());
             modelo.setFile(selectedFile, tipoDistancia);
         } else {

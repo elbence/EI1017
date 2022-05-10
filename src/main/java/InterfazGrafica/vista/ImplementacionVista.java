@@ -161,9 +161,11 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         cabeceras = modelo.getHeaders();
         cabeceras.remove(cabeceras.size()-1);
 
+        selectYAxisChBox.getItems().removeAll(selectYAxisChBox.getItems());
         selectYAxisChBox.getItems().addAll(cabeceras);
         selectYAxisChBox.setValue(cabeceras.get(0));
 
+        selectXAxisChBox.getItems().removeAll(selectXAxisChBox.getItems());
         selectXAxisChBox.getItems().addAll(cabeceras);
         selectXAxisChBox.setValue(cabeceras.get(1));
 
@@ -178,6 +180,9 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
 
     private void redrawPoints() {
 
+        if (selectedX >= cabeceras.size() || selectedY >= cabeceras.size() || selectedY < 0 || selectedX < 0) {
+            return;
+        }
         yAxis.setLabel(cabeceras.get(selectedY));
         xAxis.setLabel(cabeceras.get(selectedX));
 
