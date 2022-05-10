@@ -12,7 +12,8 @@ public class DistanceDifferencesKMeansTest {
 
     @Test
     void estimate() {
-
+        Factory distancia = new DistanceFactory();
+        Distance manDist = distancia.getDistance(DistanceType.MANHATTAN);
         int maxIterations = 6; // recommended 5 - 10
         int numberClusters = 10; // more means more exception probability
         int trainIterations = 20; // results may vary, high could tend to more exceptions
@@ -42,7 +43,7 @@ public class DistanceDifferencesKMeansTest {
             for (int i = 0; i < 5; i++)
                 EUCguess[i] = kmeans.estimate(table.getRowAt(randomIndexes[i]));
 
-            kmeans.setDistance(new ManhattanDistance());
+            kmeans.setDistance(manDist);
             kmeans.train(table);
 
             for (int i = 0; i < 5; i++)
