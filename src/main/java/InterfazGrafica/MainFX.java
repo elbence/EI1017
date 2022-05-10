@@ -1,5 +1,10 @@
 package InterfazGrafica;
 
+import InterfazGrafica.controlador.Controlador;
+import InterfazGrafica.controlador.ImplementacionControlador;
+import InterfazGrafica.modelo.CambioModelo;
+import InterfazGrafica.modelo.ImplementacionModelo;
+import InterfazGrafica.vista.ImplementacionVista;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,12 +18,17 @@ public class MainFX extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Hello World!");
-        StackPane root = new StackPane();
-        Button btn = new Button("Hola");
-        root.getChildren().add(btn);
-        primaryStage.setScene(new Scene(root, 250, 250));
-        primaryStage.show();
+    public void start(Stage stage) throws Exception {
+
+        ImplementacionControlador controlador = new ImplementacionControlador();
+        ImplementacionModelo modelo = new ImplementacionModelo();
+        ImplementacionVista vista = new ImplementacionVista(stage);
+        modelo.setVista(vista);
+        controlador.setVista(vista);
+        controlador.setModelo(modelo);
+        vista.setModelo(modelo);
+        vista.setControlador(controlador);
+        vista.creaGUI();
+
     }
 }
