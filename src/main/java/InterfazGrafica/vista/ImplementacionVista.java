@@ -163,8 +163,6 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
 
         inicializaScatterChartValues();
 
-
-
     }
 
     private void inicializaScatterChartValues() {

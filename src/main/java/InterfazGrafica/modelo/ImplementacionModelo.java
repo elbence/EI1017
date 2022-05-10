@@ -37,6 +37,11 @@ public class ImplementacionModelo implements CambioModelo,InterrogaModelo{
         vista.nuevoDocumento();
     }
 
+    @Override
+    public void setTipoDistancia(DistanceType tipoDistancia) {
+        kNearestNeighbours.setDistance(distancia.getDistance(tipoDistancia));
+    }
+
     public void setVista(InformaVista vista) {
         this.vista = vista;
     }

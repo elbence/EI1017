@@ -51,12 +51,13 @@ public class ImplementacionControlador implements Controlador {
 
     @Override
     public void actualizaDistancia(Number valorInicial, Number valorActual) {
-        if (valorActual.equals(valorInicial)) System.out.println("No actualiza tipoDistancia");
-        if (valorActual.intValue() == 0) {
+        if (valorActual.equals(valorInicial)) return;
+        else if (valorActual.intValue() == 0) {
             tipoDistancia = DistanceType.EUCLIDEAN;
         } else {
             tipoDistancia = DistanceType.MANHATTAN;
         }
+        modelo.setTipoDistancia(tipoDistancia);
     }
 
     public void setModelo(CambioModelo modelo) {
