@@ -27,21 +27,22 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
     private Controlador controlador;
     private InterrogaModelo modelo;
 
-    // * OTHER VARS
+    // * DESIGN VARS
     private ChoiceBox selectYAxisChBox;
+    private ChoiceBox selectXAxisChBox;
     private ScatterChart scatterChart;
     private NumberAxis yAxis;
     private NumberAxis xAxis;
-    private List<String> cabeceras;
     private ChoiceBox tipoDistanciaChbox;
-    private TextField estimacionPuntoTxt;
-    private ChoiceBox selectXAxisChBox;
     private TextField anadePuntoTxt;
+    private TextField estimacionPuntoTxt;
 
-    private int selectedY;
+    // * DATA VARS
+    private List<String> cabeceras;
     private int selectedX;
-
-    private String estimadaAnterior;
+    private int selectedY;
+    private String tipoEstimado;
+    private RowWithLabels rowEstimada;
 
 
     public ImplementacionVista(final Stage stage) {
@@ -57,9 +58,9 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
     }
 
     public void creaGUI() {
-        // Diseña la gui
 
-        stage.setTitle("Hello World!");
+
+        stage.setTitle("");
         stage.setMinHeight(400);
         stage.setMinWidth(600);
 
@@ -70,12 +71,12 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         firstLine.setAlignment(Pos.CENTER_LEFT);
 
         // + 1 selection
-        // will contain 1 entry per type of
         selectYAxisChBox = new ChoiceBox();
         selectYAxisChBox.setMinWidth(80);
         selectYAxisChBox.getSelectionModel().selectedIndexProperty().addListener((item, valorInicial, valorActual) -> {
             selectedY = valorActual.intValue();
             redrawPoints();
+            System.out.println("(vist) Y Point selection called, index value: " + valorActual);
         } );
 
         // + 2 chart
@@ -106,6 +107,7 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         tipoDistanciaChbox.setDisable(true);
         tipoDistanciaChbox.getSelectionModel().selectedIndexProperty().addListener((item, valorInicial, valorActual) -> {
             controlador.actualizaDistancia(valorInicial, valorActual);
+            System.out.println("(vist) Distance type changed from " + valorInicial + " to " + valorActual);
         } );
 
         // - (3) añadePunto TXT
@@ -117,7 +119,7 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
 
         // - (5) estimate BTN
         Button estimateBtn = new Button("Estimate");
-        estimateBtn.setOnAction(actionEvent -> controlador.estimateValue());
+        estimateBtn.setOnAction(actionEvent -> controlador.notificaNuevoValorEstimate());
 
         // - ADD TO VBOX
         controlButtons.getChildren().addAll(openFileBtn, tipoDistanciaChbox, anadePuntoTxt, estimacionPuntoTxt, estimateBtn);
@@ -131,6 +133,7 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         selectXAxisChBox.getSelectionModel().selectedIndexProperty().addListener((item, valorInicial, valorActual) -> {
             selectedX = valorActual.intValue();
             redrawPoints();
+            System.out.println("(vist) X Point selection called, index value: " + valorActual);
         } );
 
 
@@ -172,6 +175,14 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         inicializaScatterChartValues();
     }
 
+    @Override
+    public void nuevaEstimacion() {
+        tipoEstimado = modelo.getTipoEstimado();
+        estimacionPuntoTxt.setText(tipoEstimado);
+        rowEstimada = modelo.getRowEstimada();
+        redrawPoints();
+    }
+
     private void inicializaScatterChartValues() {
         selectedY = 0;
         selectedX = 1;
@@ -179,6 +190,10 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
     }
 
     private void redrawPoints() {
+
+        System.out.print("(vist) Dibujando puntos");
+        if (tipoEstimado != null) System.out.print(", estimado considerado");
+        System.out.println();
 
         if (selectedX >= cabeceras.size() || selectedY >= cabeceras.size() || selectedY < 0 || selectedX < 0) {
             return;
@@ -200,10 +215,16 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         }
 
         for (int i = 0; i < tipos.size(); i++) scatterChart.getData().add(conjuntoSeries.get(i));
+
+        if (tipoEstimado != null) {
+            XYChart.Series tmp = new XYChart.Series<>();
+            tmp.getData().add(new XYChart.Data(rowEstimada.get(selectedX), rowEstimada.get(selectedY)));
+            scatterChart.getData().add(tmp);
+        }
     }
 
     @Override
-    public String getNewPoint() {
+    public String getNuevoValorEstimate() {
         return anadePuntoTxt.getText();
     }
 }

@@ -7,5 +7,5 @@ public interface Controlador {
 
     void actualizaDistancia(Number valorInicial, Number valorActual);
 
-    void estimateValue();
+    void notificaNuevoValorEstimate();
 }

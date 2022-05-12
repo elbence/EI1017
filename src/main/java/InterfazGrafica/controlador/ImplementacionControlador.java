@@ -1,20 +1,13 @@
 package InterfazGrafica.controlador;
 
-import Distancias.Distance;
-import Distancias.DistanceFactory;
 import Distancias.DistanceType;
-import Distancias.Factory;
-import Estructura.CSV;
-import Estructura.TableWithLabels;
 import InterfazGrafica.modelo.CambioModelo;
-import InterfazGrafica.modelo.ImplementacionModelo;
-import InterfazGrafica.vista.ImplementacionVista;
 import InterfazGrafica.vista.InterrogaVista;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImplementacionControlador implements Controlador {
 
@@ -40,10 +33,10 @@ public class ImplementacionControlador implements Controlador {
         File selectedFile = fc.showOpenDialog(null);
 
         if (selectedFile != null && selectedFile.isFile() && checkFileExtension(selectedFile.getAbsolutePath())) {
-            System.out.println("Opening: " + selectedFile.getName());
+            System.out.println("(ctrl) Opening: " + selectedFile.getName());
             modelo.setFile(selectedFile, tipoDistancia);
         } else {
-            System.out.println("File not valid");
+            System.out.println("(ctrl) File type not valid");
         }
     }
 
@@ -63,30 +56,25 @@ public class ImplementacionControlador implements Controlador {
     }
 
     @Override
-    public void estimateValue() {
-        String newPoint = vista.getNewPoint();
-        System.out.println("Estimating:");
+    public void notificaNuevoValorEstimate() { // Convertir el valor a un conjunto de doubles y darselo a modelo
+        String newPoint = vista.getNuevoValorEstimate();
+        System.out.println("(ctrl) Estimating: " + newPoint);
         if(newPoint != null && validaPunto(newPoint)) {
-            System.out.println("Valid!");
-            double[] puntoDouble = toDoubleArray(newPoint);
-            System.out.println(Arrays.toString(puntoDouble));
+            List<Double> puntoDouble = toDoubleList(newPoint);
+            System.out.println("(ctrl) Valid: " + newPoint);
+            modelo.setNuevoValorEstimate(puntoDouble);
         }
-        System.out.println();
     }
 
-    private double[] toDoubleArray(String newPoint) {
+    private List<Double> toDoubleList(String newPoint) {
         String[] strArray = newPoint.split(",");
-        double[] array = new double[strArray.length];
-        for (int i = 0; i < strArray.length; i++) {
-            array[i] = Double.parseDouble(strArray[i]);
-        }
+        List<Double> array = new ArrayList<>(strArray.length);
+        for (String s : strArray) array.add(Double.parseDouble(s));
         return array;
     }
 
     private boolean validaPunto(String newPoint) {
-        System.out.println(newPoint);
         String[] array = newPoint.split(",");
-        if (array.length != 4) return false;
         for (String act : array) if (!isNumeric(act)) return false;
         return true;
     }

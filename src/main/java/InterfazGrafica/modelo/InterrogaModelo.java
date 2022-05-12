@@ -1,5 +1,6 @@
 package InterfazGrafica.modelo;
 
+import Estructura.RowWithLabels;
 import Estructura.TableWithLabels;
 
 import java.util.List;
@@ -10,4 +11,8 @@ public interface InterrogaModelo {
     TableWithLabels getDataTable();
 
     List<String> getTypes();
+
+    String getTipoEstimado();
+
+    RowWithLabels getRowEstimada();
 }
