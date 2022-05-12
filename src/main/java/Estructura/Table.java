@@ -50,4 +50,10 @@ public class Table {
     public boolean isEmpty() {
         return size() == 0;
     }
+
+    public Row getDefaultRow() {
+        Row defRow = new Row();
+        if (rows.size() > 0) for(int i = 0; i < rows.get(0).size(); i++) defRow.addItem(0.0);
+        return defRow;
+    }
 }
