@@ -9,9 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -64,6 +62,7 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         stage.setMinHeight(400);
         stage.setMinWidth(600);
 
+        TabPane rootHolder = new TabPane();
         VBox root = new VBox();
 
         // * FIRST LINE
@@ -151,7 +150,12 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         // + final
         root.getChildren().addAll(firstLine, secondLine);
 
-        stage.setScene(new Scene(root, 400, 400));
+        Tab knnTab = new Tab("KNN");
+        knnTab.setContent(root);
+        //knnTab.setClosable(false);
+        rootHolder.getTabs().add(knnTab);
+
+        stage.setScene(new Scene(rootHolder, 400, 400));
         stage.show();
 
         // ! COMUNICATION METHODS
