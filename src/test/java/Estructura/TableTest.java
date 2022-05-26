@@ -2,6 +2,7 @@ package Estructura;
 
 import Estructura.Row;
 import Estructura.Table;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ class TableTest {
             {0.2, 0.2, 0.2, 0.2}
     };
 
-    @org.junit.jupiter.api.Test
+    @Test
     void addHeader() {
         int i = 0;
         for (String etiqueta : etiquetas){
@@ -30,7 +31,7 @@ class TableTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void addRow() {
         for (int i = 0; i<array.length; i++){
             Row row = new Row();
@@ -52,7 +53,7 @@ class TableTest {
             tabla.addRow(row);
         }
     }
-    @org.junit.jupiter.api.Test
+    @Test
     void getClumAt() {
         rellenar();
         for (int i = 0; i<array.length; i++){
@@ -66,7 +67,7 @@ class TableTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getRowAt() {
         for (int i = 0; i<array.length; i++){
             Row row = new Row();
