@@ -29,16 +29,13 @@ public class KMeans implements  Algorithm<Table, String, Row>, DistanceClient {
 
     @Override
     public void train(Table data) {
-        //deal with empty data
-        if (data == null || data.isEmpty()) return;
-        // save given data
-        table = (TableWithLabels) data;
-        // choose representatives from data
-        chooseRepresentatives();
-        // repeat rest of steps
-        for (int current_iteration = 0; current_iteration < iterations; current_iteration++) {
-            // restart vector for counting elements on clusters
-            restartClusterElementsCounter();
+        if (data == null || data.isEmpty()) return; //deal with empty data
+        table = (TableWithLabels) data; // save given data
+        chooseRepresentatives(); // choose representatives from data
+
+        for (int current_iteration = 0; current_iteration < iterations; current_iteration++) { // repeat rest of steps
+            restartClusterElementsCounter(); // restart vector for counting elements on clusters
+
             // calculate the cluster of each element & assign tag + count how many elements per cluster there are
             for (int j =0; j < table.size(); j++) {
                 RowWithLabels element = table.getRowAt(j);
@@ -46,15 +43,9 @@ public class KMeans implements  Algorithm<Table, String, Row>, DistanceClient {
                 assignClusterTag(element, elementCluster);
                 increaseClusterMembers(elementCluster);
             }
-            // recalculate centroids
-            recalculateRepresentatives();
+            recalculateRepresentatives(); // recalculate centroids
         }
         // Finished training!
-    }
-
-    private int extractCluster(String label) {
-        String num = label.replaceAll("[^0-9]","");
-        return Integer.parseInt(num);
     }
 
     @Override
@@ -147,9 +138,18 @@ public class KMeans implements  Algorithm<Table, String, Row>, DistanceClient {
 
     }
 
+    private int extractCluster(String label) {
+        String num = label.replaceAll("[^0-9]","");
+        return Integer.parseInt(num);
+    }
+
     @Override
     public void setDistance(Distance distance) {
         this.distance = distance;
+    }
+
+    public RowWithLabels[] getRepresentatives() {
+        return representatives;
     }
 
 }

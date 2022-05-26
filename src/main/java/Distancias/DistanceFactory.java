@@ -3,12 +3,10 @@ package Distancias;
 public class DistanceFactory implements Factory{
     @Override
     public Distance getDistance(DistanceType distanceType) {
-        if (distanceType == DistanceType.EUCLIDEAN){
-            return new EuclideanDistance();
-        }
+        Distance distance = new EuclideanDistance();
         if (distanceType == DistanceType.MANHATTAN){
-            return new ManhattanDistance();
+            distance = new ManhattanDistance();
         }
-        return null;
+        return distance;
     }
 }

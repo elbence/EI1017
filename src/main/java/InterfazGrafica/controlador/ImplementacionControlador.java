@@ -41,7 +41,9 @@ public class ImplementacionControlador implements Controlador {
     }
 
     private boolean checkFileExtension(String absolutePath) {
-        return absolutePath.substring(absolutePath.lastIndexOf(".")).equals(".csv");
+        int posExtension = absolutePath.lastIndexOf(".");
+        if (posExtension < 0) return false;
+        return absolutePath.substring(posExtension).equals(".csv");
     }
 
     @Override
