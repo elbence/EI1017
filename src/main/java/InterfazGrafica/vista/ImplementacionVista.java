@@ -41,6 +41,7 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
     private int selectedY;
     private String tipoEstimado;
     private RowWithLabels rowEstimada;
+    private boolean openingDocument; // flow controller, so elements dont go mad while opening || closing
 
 
     public ImplementacionVista(final Stage stage) {
@@ -73,9 +74,11 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         selectYAxisChBox = new ChoiceBox();
         selectYAxisChBox.setMinWidth(80);
         selectYAxisChBox.getSelectionModel().selectedIndexProperty().addListener((item, valorInicial, valorActual) -> {
-            selectedY = valorActual.intValue();
-            redrawPoints();
-            System.out.println("(vist) Y Point selection called, index value: " + valorActual);
+            if (!openingDocument) {
+                selectedY = valorActual.intValue();
+                System.out.println("(vist) Y Point selection called, index value: " + valorActual);
+                manageScatterChart();
+            }
         } );
 
         // + 2 chart
@@ -130,9 +133,12 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         // + 1
         selectXAxisChBox = new ChoiceBox();
         selectXAxisChBox.getSelectionModel().selectedIndexProperty().addListener((item, valorInicial, valorActual) -> {
-            selectedX = valorActual.intValue();
-            redrawPoints();
-            System.out.println("(vist) X Point selection called, index value: " + valorActual);
+            // should not execute when closing file -> select = -1
+            if (!openingDocument) {
+                selectedX = valorActual.intValue();
+                System.out.println("(vist) X Point selection called, index value: " + valorActual);
+                manageScatterChart();
+            }
         } );
 
 
@@ -164,48 +170,76 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
 
     @Override
     public void nuevoDocumento() {
+        openingDocument = true;
         if (tipoDistanciaChbox.isDisabled()) tipoDistanciaChbox.setDisable(false);
-        cabeceras = modelo.getHeaders();
-        cabeceras.remove(cabeceras.size()-1);
+        inicializaValoresPorDefecto();
+        inicializaCabeceras();
+        inicializaYAxisChBox();
+        inicializaXAxisChBox();
+        manageScatterChart();
+        openingDocument = false;
+    }
 
-        selectYAxisChBox.getItems().removeAll(selectYAxisChBox.getItems());
-        selectYAxisChBox.getItems().addAll(cabeceras);
-        selectYAxisChBox.setValue(cabeceras.get(0));
-
-        selectXAxisChBox.getItems().removeAll(selectXAxisChBox.getItems());
-        selectXAxisChBox.getItems().addAll(cabeceras);
-        selectXAxisChBox.setValue(cabeceras.get(1));
-
-        inicializaScatterChartValues();
+    private void inicializaValoresPorDefecto() {
+        tipoEstimado = null;
+        rowEstimada = null;
+        estimacionPuntoTxt.setText("None");
     }
 
     @Override
     public void nuevaEstimacion() {
         tipoEstimado = modelo.getTipoEstimado();
-        estimacionPuntoTxt.setText(tipoEstimado);
         rowEstimada = modelo.getRowEstimada();
-        redrawPoints();
+        estimacionPuntoTxt.setText(tipoEstimado);
+        manageScatterChart();
     }
 
-    private void inicializaScatterChartValues() {
+    @Override
+    public String getNuevoValorEstimate() {
+        return anadePuntoTxt.getText();
+    }
+
+    private void inicializaCabeceras() {
+        cabeceras = modelo.getHeaders();
+        if (!cabeceras.isEmpty()) cabeceras.remove(cabeceras.size()-1);
+    }
+
+    private void inicializaYAxisChBox() {
+        selectYAxisChBox.getItems().removeAll(selectYAxisChBox.getItems());
+        selectYAxisChBox.getItems().addAll(cabeceras);
         selectedY = 0;
-        selectedX = 1;
-        redrawPoints();
+        if (!cabeceras.isEmpty()) selectYAxisChBox.setValue(cabeceras.get(selectedY));
     }
 
-    private void redrawPoints() {
+    private void inicializaXAxisChBox() {
+        selectXAxisChBox.getItems().removeAll(selectXAxisChBox.getItems());
+        selectXAxisChBox.getItems().addAll(cabeceras);
+        if (cabeceras.size() > 1) selectedX = 1;
+        else selectedX = 0;
+        if (!cabeceras.isEmpty()) selectXAxisChBox.setValue(cabeceras.get(selectedX));
+    }
 
+    private void manageScatterChart() {
         System.out.print("(vist) Dibujando puntos");
-        if (tipoEstimado != null) System.out.print(", estimado considerado");
-        System.out.println();
 
-        if (selectedX >= cabeceras.size() || selectedY >= cabeceras.size() || selectedY < 0 || selectedX < 0) {
-            return;
+        setScatterChartNames();
+        setScatterChartData();
+        if (tipoEstimado != null) setEstimatedPoint();
+        scatterChart.autosize(); // if not size may bug when changing data
+
+        System.out.println("\n");
+    }
+
+    private void setScatterChartNames() {
+        if (!cabeceras.isEmpty()) {
+            yAxis.setLabel(cabeceras.get(selectedY));
+            xAxis.setLabel(cabeceras.get(selectedX));
+            scatterChart.setTitle(cabeceras.get(selectedY) + " vs " + cabeceras.get(selectedX));
         }
-        yAxis.setLabel(cabeceras.get(selectedY));
-        xAxis.setLabel(cabeceras.get(selectedX));
+    }
 
-        scatterChart.getData().removeAll(scatterChart.getData());
+    private void setScatterChartData() {
+        scatterChart.getData().clear();
         // dependiente de los tipos de series que hay en el csv
         TableWithLabels table = modelo.getDataTable();
         List<String> tipos = modelo.getTypes();
@@ -219,16 +253,12 @@ public class ImplementacionVista implements InformaVista, InterrogaVista {
         }
 
         for (int i = 0; i < tipos.size(); i++) scatterChart.getData().add(conjuntoSeries.get(i));
-
-        if (tipoEstimado != null) {
-            XYChart.Series tmp = new XYChart.Series<>();
-            tmp.getData().add(new XYChart.Data(rowEstimada.get(selectedX), rowEstimada.get(selectedY)));
-            scatterChart.getData().add(tmp);
-        }
     }
 
-    @Override
-    public String getNuevoValorEstimate() {
-        return anadePuntoTxt.getText();
+    private void setEstimatedPoint() {
+        System.out.print(", estimado considerado");
+        XYChart.Series tmp = new XYChart.Series<>();
+        tmp.getData().add(new XYChart.Data(rowEstimada.get(selectedX), rowEstimada.get(selectedY)));
+        scatterChart.getData().add(tmp);
     }
 }

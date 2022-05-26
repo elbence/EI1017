@@ -58,7 +58,7 @@ public class ImplementacionControlador implements Controlador {
     @Override
     public void notificaNuevoValorEstimate() { // Convertir el valor a un conjunto de doubles y darselo a modelo
         String newPoint = vista.getNuevoValorEstimate();
-        System.out.println("(ctrl) Estimating: " + newPoint);
+        System.out.println("(ctrl) New candidate: " + newPoint);
         if(newPoint != null && validaPunto(newPoint)) {
             List<Double> puntoDouble = toDoubleList(newPoint);
             System.out.println("(ctrl) Valid: " + newPoint);
