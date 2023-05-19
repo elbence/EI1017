@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MainFX" type="Application" factoryName="Application" nameIsGenerated="true">
-    <option name="MAIN_CLASS_NAME" value="InterfazGrafica.MainFX" />
+    <option name="MAIN_CLASS_NAME" value="interfaz_grafica.MainFX" />
     <module name="EI1017_Project" />
     <option name="VM_PARAMETERS" value="--module-path &quot;C:\Users\Juanjo\IdeaProjects\EI1017\javaFx\javafx-sdk-17.0.7\lib&quot; --add-modules javafx.controls,javafx.fxml" />
-    <extension name="coverage">
+    <extension name="coverage" sample_coverage="false">
       <pattern>
-        <option name="PATTERN" value="InterfazGrafica.*" />
+        <option name="PATTERN" value="interfaz_grafica.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
