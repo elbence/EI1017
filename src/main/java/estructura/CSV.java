@@ -10,9 +10,7 @@ public class CSV {
     // Se trata de una clase para gestionar ficheros del tipo Estructura.CSV
 
     public Table readTable (String route) {
-        try {
-            File myFile = new File(route);
-            Scanner myIter = new Scanner(myFile);
+        try (Scanner myIter = new Scanner(new File(route))) {
             myIter.useDelimiter(",");
 
             Table table = new Table();
@@ -24,6 +22,9 @@ public class CSV {
             return table;
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: File does not exist.");
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            System.out.println("ERROR: Provide a path");
             e.printStackTrace();
         }
         return null;

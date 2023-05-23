@@ -32,9 +32,11 @@ public class LinealRegression implements Algorithm<Table, Double, Double>{
             numerador += ((x.get(i)-mediax)*(y.get(i)-mediay));
             denominador += Math.pow((x.get(i)-mediax), 2);
         }
-        if (denominador != 0.0) {
+        try {
             alpha = numerador/denominador;
             beta = mediay-(alpha*mediax);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     public Double estimate(Double sample) throws NotTrainedException{

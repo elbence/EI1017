@@ -14,7 +14,7 @@ public class TableWithLabels extends Table{
     @Override
     public String toString() {
         String tmp = "";
-        tmp += super.getAllHeaders();
+        tmp += super.getHeaders();
         for (int i =0; i < super.size(); i++) {
             RowWithLabels row = (RowWithLabels)  super.getRowAt(i);
             tmp += ("\n" + row);

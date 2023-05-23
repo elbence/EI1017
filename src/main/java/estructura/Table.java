@@ -28,7 +28,6 @@ public class Table {
     public String getHeader(int index){
         return headers.get(index);
     }
-    public List<String> getAllHeaders() {return headers;}
 
     //opcional
     public boolean addRow(Row row){
@@ -52,7 +51,7 @@ public class Table {
 
     public Row getDefaultRow() {
         Row defRow = new Row();
-        if (rows.size() > 0) for(int i = 0; i < rows.get(0).size(); i++) defRow.addItem(0.0);
+        if (rows.isEmpty()) for(int i = 0; i < rows.get(0).size(); i++) defRow.addItem(0.0);
         return defRow;
     }
 }
